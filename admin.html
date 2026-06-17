@@ -86,6 +86,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#1a1208;color:#f0e0c0;mi
 .hizmet-row-admin .adi{flex:1;font-size:13px;color:#f0e0c0;}
 .hizmet-row-admin input[type="text"]{background:rgba(255,255,255,0.07);border:1px solid rgba(200,169,110,0.3);border-radius:6px;color:#f0e0c0;padding:6px 10px;font-size:13px;width:120px;outline:none;}
 .hizmet-row-admin input[type="text"]:focus{border-color:#c8a86e;}
+.hizmet-row-admin .aciklama-input{flex:1.2;min-width:170px;}
 .btn-kaydet-fiyat{background:linear-gradient(135deg,#8B6914,#c8a86e);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;}
 .btn-kaydet-fiyat:hover{opacity:0.85;}
 .btn-hizmet-sil{background:rgba(244,67,54,0.15);color:#f44336;border:1px solid rgba(244,67,54,0.3);border-radius:6px;padding:6px 10px;font-size:11px;cursor:pointer;}
@@ -168,6 +169,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#1a1208;color:#f0e0c0;mi
   .hizmet-row-admin{flex-wrap:wrap;gap:8px;padding:10px 12px;}
   .hizmet-row-admin .adi{width:100%;font-size:12px;}
   .hizmet-row-admin input[type="text"]{width:100%;box-sizing:border-box;}
+  .hizmet-row-admin .aciklama-input{min-width:unset;}
   .yeni-hizmet-form{flex-direction:column;}
   .yeni-hizmet-form input{min-width:unset;width:100%;}
   .yeni-kategori-form{flex-direction:column;}
@@ -555,14 +557,20 @@ async function kategorileriYukle() {
     ]},
   ];
 
+  defaultKat.forEach(kat => (kat.hizmetler || []).forEach(h => {
+    if(h.id === 'c1' || h.id === 'c2') h.aciklama = h.aciklama || 'Manikur hediye';
+  }));
+
   try {
     const snap = await getDocs(collection(db, "kategoriler"));
     if(snap.empty) {
       // İlk kez: default verileri Firebase'e yaz
+      const kayitliKat = [];
       for(const kat of defaultKat) {
-        await addDoc(collection(db, "kategoriler"), kat);
+        const ref = await addDoc(collection(db, "kategoriler"), kat);
+        kayitliKat.push({...kat, fireId: ref.id});
       }
-      kategoriler = defaultKat;
+      kategoriler = kayitliKat;
     } else {
       kategoriler = snap.docs.map(d => ({...d.data(), fireId: d.id}));
     }
@@ -574,6 +582,7 @@ async function kategorileriYukle() {
 
 function kategorileriRender() {
   const el = document.getElementById('kategori-listesi-admin');
+  const temizle = (deger) => String(deger || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   el.innerHTML = kategoriler.map((kat, ki) => `
     <div class="kategori-yonetim">
       <div class="kategori-header-admin">
@@ -582,14 +591,16 @@ function kategorileriRender() {
       </div>
       ${(kat.hizmetler||[]).map((h, hi) => `
         <div class="hizmet-row-admin">
-          <span class="adi">${h.ad}</span>
-          <input type="text" value="${h.fiyat}" id="fiyat-${ki}-${hi}" placeholder="Fiyat (₺)"/>
+          <span class="adi">${temizle(h.ad)}</span>
+          <input type="text" value="${temizle(h.fiyat)}" id="fiyat-${ki}-${hi}" placeholder="Fiyat (₺)"/>
+          <input type="text" class="aciklama-input" value="${temizle(h.aciklama)}" id="aciklama-${ki}-${hi}" placeholder="Açıklama (örn. Hediye)"/>
           <button class="btn-kaydet-fiyat" onclick="fiyatKaydet(${ki},${hi})">Kaydet</button>
           <button class="btn-hizmet-sil" onclick="hizmetSil(${ki},${hi})">🗑️</button>
         </div>`).join('')}
       <div class="yeni-hizmet-form">
         <input type="text" placeholder="Hizmet adı..." id="yeni-hizmet-ad-${ki}"/>
         <input type="text" placeholder="Fiyat (₺)..." id="yeni-hizmet-fiyat-${ki}" style="max-width:130px;"/>
+        <input type="text" placeholder="Açıklama (isteğe bağlı)..." id="yeni-hizmet-aciklama-${ki}"/>
         <button class="btn-ekle" onclick="hizmetEkle(${ki})">+ Ekle</button>
       </div>
     </div>`).join('');
@@ -597,7 +608,9 @@ function kategorileriRender() {
 
 window.fiyatKaydet = async function(ki, hi) {
   const yeniFiyat = document.getElementById(`fiyat-${ki}-${hi}`).value;
+  const yeniAciklama = document.getElementById(`aciklama-${ki}-${hi}`).value.trim();
   kategoriler[ki].hizmetler[hi].fiyat = yeniFiyat;
+  kategoriler[ki].hizmetler[hi].aciklama = yeniAciklama;
   await kategoriFirebaseGuncelle(ki);
   // Ana sayfayı da güncelle
   anaHizmetleriGuncelle();
@@ -607,8 +620,9 @@ window.fiyatKaydet = async function(ki, hi) {
 window.hizmetEkle = async function(ki) {
   const ad = document.getElementById(`yeni-hizmet-ad-${ki}`).value.trim();
   const fiyat = document.getElementById(`yeni-hizmet-fiyat-${ki}`).value.trim();
+  const aciklama = document.getElementById(`yeni-hizmet-aciklama-${ki}`).value.trim();
   if(!ad || !fiyat) { toast('Ad ve fiyat boş olamaz!', true); return; }
-  kategoriler[ki].hizmetler.push({id: 'h'+Date.now(), ad, fiyat});
+  kategoriler[ki].hizmetler.push({id: 'h'+Date.now(), ad, fiyat, aciklama});
   await kategoriFirebaseGuncelle(ki);
   anaHizmetleriGuncelle();
   kategorileriRender();
@@ -630,7 +644,11 @@ window.kategoriEkle = async function() {
   if(!ad) { toast('Kategori adı boş olamaz!', true); return; }
   const yeniKat = {id:'k'+Date.now(), icon, ad, hizmetler:[]};
   kategoriler.push(yeniKat);
-  try { await addDoc(collection(db, "kategoriler"), yeniKat); } catch(e) {}
+  try {
+    const ref = await addDoc(collection(db, "kategoriler"), yeniKat);
+    yeniKat.fireId = ref.id;
+  } catch(e) {}
+  anaHizmetleriGuncelle();
   kategorileriRender();
   document.getElementById('yeni-kat-icon').value = '';
   document.getElementById('yeni-kat-ad').value = '';
@@ -644,6 +662,7 @@ window.kategoriSil = async function(ki) {
   if(kat.fireId) {
     try { await deleteDoc(doc(db, "kategoriler", kat.fireId)); } catch(e) {}
   }
+  anaHizmetleriGuncelle();
   kategorileriRender();
   toast('🗑️ Kategori silindi.');
 };
@@ -652,6 +671,16 @@ async function kategoriFirebaseGuncelle(ki) {
   const kat = kategoriler[ki];
   if(kat.fireId) {
     try { await updateDoc(doc(db, "kategoriler", kat.fireId), {hizmetler: kat.hizmetler}); } catch(e) {}
+  } else {
+    try {
+      const ref = await addDoc(collection(db, "kategoriler"), {
+        id: kat.id,
+        icon: kat.icon,
+        ad: kat.ad,
+        hizmetler: kat.hizmetler || []
+      });
+      kat.fireId = ref.id;
+    } catch(e) {}
   }
 }
 

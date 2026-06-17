@@ -723,7 +723,7 @@ function saatleriSifirla() {
 
 // Admin kisayolu
 document.addEventListener('keydown', function(e){
-  if(e.ctrlKey && e.shiftKey && e.key === 'A') window.location.href = 'radiosa-admin.html';
+  if(e.ctrlKey && e.shiftKey && e.key === 'A') window.location.href = 'admin.html';
 });
 </script>
 
@@ -741,6 +741,73 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+function guvenliMetin(deger) {
+  return String(deger || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function fiyatYaz(fiyat) {
+  const metin = String(fiyat || '').trim();
+  if(!metin) return '';
+  return /tl|₺/i.test(metin) ? metin : metin + ' TL';
+}
+
+function fiyatListesiRender(kategoriler) {
+  const accordion = document.getElementById('accordion');
+  if(!accordion || !Array.isArray(kategoriler) || kategoriler.length === 0) return;
+
+  accordion.innerHTML = kategoriler.map(function(kat, ki) {
+    const panelId = String(kat.id || ('kat-' + ki)).replace(/[^a-zA-Z0-9_-]/g, '');
+    const acik = ki === 0;
+    const hizmetler = Array.isArray(kat.hizmetler) ? kat.hizmetler : [];
+    const satirlar = hizmetler.map(function(h) {
+      const hizmetAdi = String(h.ad || '');
+      const hizmetParam = JSON.stringify(hizmetAdi).replace(/'/g, '&#39;');
+      const aciklama = String(h.aciklama || '').trim();
+      return `
+        <div class="hizmet-satir">
+          <span class="hizmet-adi">${guvenliMetin(hizmetAdi)}</span>
+          <span class="hizmet-fiyat">${guvenliMetin(fiyatYaz(h.fiyat))}</span>
+          <button class="randevu-btn" onclick='modalAc(${hizmetParam})'>Randevu Al</button>
+        </div>
+        ${aciklama ? `<div class="hizmet-notu">(${guvenliMetin(aciklama)})</div>` : ''}`;
+    }).join('');
+
+    return `
+      <div class="panel" style="animation-delay:${0.05 + (ki * 0.05)}s">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a href="#" onclick="togglePanel(this,'${panelId}');return false;" class="${acik ? '' : 'kapali'}">${guvenliMetin(kat.ad)}</a>
+          </h4>
+        </div>
+        <div class="panel-body" id="panel-${panelId}" style="${acik ? '' : 'display:none'}">
+          ${satirlar}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function fiyatListesiYukle() {
+  try {
+    const snap = await getDocs(collection(db, 'kategoriler'));
+    if(!snap.empty) {
+      fiyatListesiRender(snap.docs.map(d => d.data()));
+      return;
+    }
+  } catch(e) {}
+
+  try {
+    const kayitli = JSON.parse(localStorage.getItem('radiosa_kategoriler') || '[]');
+    fiyatListesiRender(kayitli);
+  } catch(e) {}
+}
+
+fiyatListesiYukle();
 
 // Tarih degisince dolu saatleri cek
 document.getElementById('form-tarih').addEventListener('change', async function(){
