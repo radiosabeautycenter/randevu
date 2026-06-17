@@ -579,6 +579,13 @@ textarea.form-input{resize:none;padding-top:11px;}
           <input id="form-tel" type="tel" class="form-input" placeholder="05xx xxx xx xx"/>
         </div>
         <div class="input-sarmali">
+          <label>Estetisyen</label>
+          <span class="ikon">👩</span>
+          <select id="form-estetisyen" class="form-input" onchange="document.getElementById('form-tarih').dispatchEvent(new Event('change'))">
+            <option value="">Estetisyen Seçin</option>
+          </select>
+        </div>
+        <div class="input-sarmali">
           <label>Tarih</label>
           <span class="ikon">📅</span>
           <input id="form-tarih" type="date" class="form-input"/>
@@ -633,6 +640,51 @@ function togglePanel(link, id) {
 }
 
 // MODAL AC
+
+// Estetisyen mapping
+const estetisyenler = {
+  'tirnak': ['Zehra Azarak'],
+  'kas': ['Sultan Yaşan'],
+  'her': ['Zehra Azarak', 'Sultan Yaşan']
+};
+
+const hizmetGrup = {
+  'Normal Kaş Alımı': 'kas',
+  'Bıyık Alımı': 'kas',
+  'Kaş + Bıyık': 'kas',
+  'Altın Oran Kaş Alımı': 'kas',
+  'Tüm Yüz İple Alım': 'kas',
+  'Nail Art': 'tirnak',
+  'Protez Tek Parmak': 'tirnak',
+  'Manikür': 'tirnak',
+  'Kalıcı Oje Çıkarma': 'tirnak',
+  'Protez Tırnak Çıkarma': 'tirnak',
+  'Kalıcı Oje': 'tirnak',
+  'Protez Tırnak': 'tirnak',
+  'İnci Tozu': 'tirnak',
+  'French': 'tirnak'
+};
+
+function estetisyenGuncelle(hizmet) {
+  const grup = hizmetGrup[hizmet] || 'her';
+  const liste = estetisyenler[grup];
+  const sel = document.getElementById('form-estetisyen');
+  sel.innerHTML = '<option value="">Estetisyen Seçin</option>';
+  liste.forEach(function(e) {
+    var opt = document.createElement('option');
+    opt.value = e;
+    opt.textContent = e;
+    sel.appendChild(opt);
+  });
+  // Tek kişi varsa otomatik seç
+  if(liste.length === 1) {
+    sel.value = liste[0];
+    sel.disabled = true;
+  } else {
+    sel.disabled = false;
+  }
+}
+
 window.modalAc = function(hizmet) {
   document.getElementById('modal-hizmet-adi').textContent = hizmet;
   document.getElementById('form-adi').value = '';
@@ -699,11 +751,11 @@ document.getElementById('form-tarih').addEventListener('change', async function(
   sel.options[0].textContent = 'Yükleniyor...';
   document.getElementById('saat-yukleniyor').style.display = 'block';
   try {
-    var snap = await getDocs(query(
-      collection(db, 'randevular'),
-      where('tarih', '==', tarih),
-      where('durum', 'in', ['bekliyor', 'onaylandi'])
-    ));
+    var seciliEste = document.getElementById('form-estetisyen').value;
+    var randevuQuery = seciliEste
+      ? query(collection(db, 'randevular'), where('tarih','==',tarih), where('estetisyen','==',seciliEste), where('durum','in',['bekliyor','onaylandi']))
+      : query(collection(db, 'randevular'), where('tarih','==',tarih), where('durum','in',['bekliyor','onaylandi']));
+    var snap = await getDocs(randevuQuery);
     var dolu = new Set();
     snap.forEach(function(d){ dolu.add(d.data().saat); });
     Array.from(sel.options).forEach(function(o){
@@ -739,12 +791,15 @@ window.randevuGonder = async function(){
   var not   = document.getElementById('form-not').value.trim();
   var hizmet = window._seciliHizmet || '';
 
+  var estetisyen = document.getElementById('form-estetisyen').value;
+
   function hatali(id){ var el=document.getElementById(id); el.classList.add('hata'); setTimeout(function(){el.classList.remove('hata');},600); el.focus(); }
 
-  if(!adi)  { hatali('form-adi'); return; }
+  if(!adi)       { hatali('form-adi'); return; }
   if(!tel || tel.replace(/\D/g,'').length < 10){ hatali('form-tel'); return; }
-  if(!tarih){ hatali('form-tarih'); return; }
-  if(!saat) { hatali('form-saat'); return; }
+  if(!estetisyen){ hatali('form-estetisyen'); return; }
+  if(!tarih)     { hatali('form-tarih'); return; }
+  if(!saat)      { hatali('form-saat'); return; }
 
   var btn = document.getElementById('gonder-btn');
   btn.disabled = true;
@@ -752,10 +807,12 @@ window.randevuGonder = async function(){
 
   try {
     // Cakisma kontrol
+    var estetisyenSec = document.getElementById('form-estetisyen').value;
     var check = await getDocs(query(
       collection(db, 'randevular'),
       where('tarih','==',tarih),
       where('saat','==',saat),
+      where('estetisyen','==',estetisyenSec),
       where('durum','in',['bekliyor','onaylandi'])
     ));
     if(!check.empty){
@@ -767,8 +824,10 @@ window.randevuGonder = async function(){
     }
 
     // Firebase kaydet
+    var estetisyen = document.getElementById('form-estetisyen').value;
     await addDoc(collection(db, 'randevular'), {
       musteriAdi: adi, telefon: tel, hizmet: hizmet,
+      estetisyen: estetisyen,
       tarih: tarih, saat: saat, not: not,
       durum: 'bekliyor', tarih_kayit: serverTimestamp()
     });
