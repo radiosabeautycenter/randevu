@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<title>Radiosa Beauty Salon - Fiyat Listesi</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Montserrat",Arial,sans-serif;font-size:14px;line-height:1.5;color:#3a2200;background:#f9f4ee;}
+
+/* ANIMASYONLAR */
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes parlak{0%,100%{box-shadow:0 0 0 0 rgba(200,169,110,0)}50%{box-shadow:0 0 15px 3px rgba(200,169,110,0.3)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes modalGir{from{opacity:0;transform:scale(0.88) translateY(24px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes overlayGir{from{opacity:0}to{opacity:1}}
+@keyframes salla{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@keyframes checkBounce{from{transform:scale(0) rotate(-45deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+@keyframes btnShin{0%{left:-100%}100%{left:100%}}
+
+/* HEADER */
+header{
+  width:100%;position:fixed;left:0;top:0;z-index:9999;
+  background:linear-gradient(135deg,#6b4c0a,#9a7020);
+  padding:10px 0;
+  box-shadow:0 2px 16px rgba(90,62,10,0.35);
+  animation:fadeDown .5s ease;
+}
+.header-ic{
+  max-width:960px;margin:0 auto;padding:0 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.header-sol{display:flex;align-items:center;gap:14px;}
+.header-logo-cerceve{
+  width:68px;height:68px;border-radius:50%;
+  border:2.5px solid #f0d080;
+  padding:3px;
+  background:rgba(255,255,255,0.08);
+  flex-shrink:0;
+  box-shadow:0 0 12px rgba(240,208,128,0.3);
+}
+.header-logo-cerceve img{
+  width:100%;height:100%;
+  border-radius:50%;object-fit:cover;
+}
+.header-marka{display:flex;flex-direction:column;justify-content:center;}
+.header-marka-ad{
+  font-size:17px;font-weight:800;color:#f0d080;
+  letter-spacing:1.5px;line-height:1.2;
+}
+.header-marka-alt{
+  font-size:10px;color:rgba(240,208,128,0.65);
+  letter-spacing:3px;font-weight:500;margin-top:2px;
+}
+.header-sag{text-align:right;}
+.header-online{
+  font-size:11px;font-weight:700;color:#f0d080;
+  letter-spacing:1.5px;text-transform:uppercase;
+  line-height:1.3;
+}
+.header-online span{
+  display:block;font-size:9px;color:rgba(240,208,128,0.55);
+  letter-spacing:2px;font-weight:500;margin-top:2px;
+}
+@media(max-width:767px){
+  .header-marka-ad{font-size:14px;}
+  .header-logo-cerceve{width:54px;height:54px;}
+  .header-online{font-size:10px;}
+}
+
+/* SALON BAŞLIK */
+.salon-title{
+  background:linear-gradient(160deg,#fffdf8,#fff4e0);
+  border-bottom:1px solid #e8d5a0;
+  animation:fadeDown .6s ease .1s both;
+}
+.salon-title-ic{max-width:960px;margin:0 auto;padding:18px 20px 14px;}
+.salon-title h1{color:#5a3e0a;font-size:22px;font-weight:800;letter-spacing:0.5px;}
+
+/* MOBİL BUTONLAR */
+.mobile-butonlar{
+  background:#fff8ee;
+  border-top:1px solid #e8d5a0;border-bottom:1px solid #e8d5a0;
+  margin-bottom:20px;
+  animation:fadeDown .6s ease .2s both;
+}
+.mobile-butonlar button{
+  float:left;border:0;border-right:1px solid #e8d5a0;
+  background:transparent;color:#8B6914;
+  padding:9px 12px;font-size:13px;font-weight:600;
+  outline:0;cursor:pointer;font-family:inherit;
+  transition:background .2s;
+}
+.mobile-butonlar button:hover{background:#fff0d0;}
+.mobile-butonlar button:last-child{border-right:0;}
+
+/* DESKTOP BUTONLAR */
+.desktop-butonlar{padding-top:8px;text-align:right;}
+.desktop-butonlar button{
+  font-size:13px;padding:8px 14px;
+  background:#fff;border:1px solid #c8a86e;border-right:0;
+  color:#8B6914;cursor:pointer;font-family:inherit;font-weight:600;
+  outline:0;transition:background .2s;
+}
+.desktop-butonlar button:hover{background:#fff8ee;}
+.desktop-butonlar button:last-child{border-radius:8px 0 0 8px;}
+.desktop-butonlar button:first-child{border-radius:0 8px 8px 0;border-right:1px solid #c8a86e;}
+
+/* LAYOUT */
+.container{max-width:960px;margin:0 auto;padding:0 15px;}
+.row{display:flex;flex-wrap:wrap;margin:0 -15px;}
+.col-12{width:100%;padding:0 15px;}
+@media(min-width:768px){
+  .salon-title{margin-top:90px;border-bottom:1px solid #e8d5a0;background:linear-gradient(160deg,#fffdf8,#fff4e0);}
+  .hidden-mobile{display:block;}
+  .hidden-desktop{display:none;}
+}
+@media(max-width:767px){
+  .salon-title{margin-top:86px;}
+  .hidden-mobile{display:none!important;}
+  .hidden-desktop{display:block;}
+  .salon-title h1{font-size:17px;}
+}
+
+/* İNSTAGRAM */
+.insta-bolum{margin:20px 0;animation:fadeUp .6s ease .3s both;}
+.insta-bolum iframe{
+  width:100%;height:560px;border:0;display:block;
+  border-radius:12px;overflow:hidden;
+  box-shadow:0 4px 20px rgba(139,105,20,0.12);
+}
+@media(max-width:767px){
+  .insta-bolum iframe{height:480px;}
+}
+.insta-bolum hr{border:0;border-top:1px solid #e8d5a0;margin:20px 0;}
+
+/* TAB */
+.tab-nav{border-bottom:2px solid #c8a86e;margin-bottom:0;list-style:none;display:flex;animation:fadeIn .5s ease .3s both;}
+.tab-nav li a{
+  display:block;padding:10px 18px;color:#9a7a50;
+  font-weight:700;font-size:13px;letter-spacing:0.5px;
+  border-radius:6px 6px 0 0;border:1px solid transparent;
+  text-decoration:none;transition:all .2s;
+}
+.tab-nav li.active a{
+  color:#5a3e0a;background:#fff;
+  border:1px solid #c8a86e;border-bottom-color:transparent;
+  margin-bottom:-2px;
+}
+.tab-nav li a:hover{color:#8B6914;background:#fff8ee;}
+.tab-icerik{
+  background:#fff;border:1px solid #e8d5a0;border-top:none;
+  margin-bottom:24px;border-radius:0 0 8px 8px;padding:10px;
+  animation:fadeIn .5s ease;
+}
+
+/* ALERT */
+.alert-bilgi{
+  background:#fff8ee;border:1px solid #e8d5a0;border-radius:8px;
+  padding:10px 14px;margin-bottom:14px;
+  color:#8B6914;font-size:12px;font-weight:600;
+  animation:fadeIn .5s ease .4s both;
+}
+
+/* ACCORDION */
+.panel{
+  margin-bottom:6px;background:#fff;
+  border:1px solid #e8d5a0;border-radius:10px;
+  overflow:hidden;
+  transition:box-shadow .25s;
+  animation:slideIn .4s ease both;
+}
+.panel:hover{box-shadow:0 3px 16px rgba(200,169,110,0.18);}
+.panel-heading{
+  background:linear-gradient(135deg,#8B6914,#c09030);
+  padding:0;cursor:pointer;
+}
+.panel-title a{
+  display:block;padding:13px 18px;
+  color:#fff;font-weight:700;font-size:14px;
+  letter-spacing:0.3px;text-decoration:none;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:opacity .2s;
+}
+.panel-title a:hover{opacity:0.9;}
+.panel-title a::after{content:"▼";font-size:11px;opacity:0.8;transition:transform .3s;}
+.panel-title a.kapali::after{transform:rotate(-90deg);}
+.panel-body{padding:0;}
+
+/* HİZMET SATIRI */
+.hizmet-satir{
+  display:flex;align-items:center;
+  padding:10px 14px;
+  border-bottom:1px solid rgba(232,213,160,0.4);
+  transition:background .2s;
+  animation:fadeIn .3s ease both;
+}
+.hizmet-satir:last-child{border-bottom:0;}
+.hizmet-satir:hover{background:#fffbf2;}
+.hizmet-adi{flex:1;font-size:14px;font-weight:600;color:#3a2200;padding-left:4px;}
+.hizmet-fiyat{
+  font-size:15px;font-weight:800;color:#8B6914;
+  min-width:80px;text-align:center;
+}
+.randevu-btn{
+  background:linear-gradient(135deg,#8B6914,#c8a86e);
+  color:#fff;border:none;border-radius:7px;
+  padding:7px 14px;font-size:12px;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  white-space:nowrap;margin-left:10px;
+  transition:all .2s;position:relative;overflow:hidden;
+  animation:parlak 2.5s infinite;
+}
+.randevu-btn::after{
+  content:"";position:absolute;
+  top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);
+  animation:btnShin 2.5s infinite;
+}
+.randevu-btn:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(139,105,20,0.35);}
+.randevu-btn:active{transform:translateY(0);}
+.hizmet-notu{
+  font-style:italic;padding:0 14px 10px 18px;
+  font-size:12px;color:#c0608a;
+}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(135deg,#2d1a06,#1a0e02);
+  color:rgba(240,220,180,0.75);
+  padding:36px 20px 20px;
+  margin-top:10px;
+}
+.footer-logo{text-align:center;margin-bottom:24px;}
+.footer-logo img{height:50px;width:auto;opacity:0.92;}
+.footer-tagline{
+  text-align:center;
+  font-size:15px;font-style:italic;color:#c8a86e;
+  margin-bottom:24px;letter-spacing:0.5px;
+}
+.footer-grid{
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:32px;margin-bottom:24px;
+}
+.footer-kolon{min-width:160px;}
+.footer-kolon-baslik{
+  color:#f0d080;font-size:10px;font-weight:800;
+  letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;
+}
+.footer-kolon p{margin:0 0 6px;font-size:13px;line-height:1.7;}
+.footer-kolon a{color:rgba(240,220,180,0.8);text-decoration:none;transition:color .2s;}
+.footer-kolon a:hover{color:#f0d080;}
+.wp-link{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#25d366;color:#fff!important;
+  padding:8px 16px;border-radius:20px;
+  font-weight:700;font-size:13px;margin-top:6px;
+  transition:all .2s;
+}
+.wp-link:hover{background:#1db954;transform:translateY(-2px);box-shadow:0 4px 12px rgba(37,211,102,0.35);}
+.footer-alt{
+  border-top:1px solid rgba(200,169,110,0.15);
+  padding-top:16px;text-align:center;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.footer-alt p{font-size:10px;opacity:0.35;margin:0;}
+.footer-admin-link{font-size:10px;opacity:0.12;color:#c8a86e;text-decoration:none;transition:opacity .2s;}
+.footer-admin-link:hover{opacity:0.4;}
+
+/* SLOGAN */
+.salon-slogan{
+  font-size:15px;
+  font-weight:600;
+  color:#8B6914;
+  letter-spacing:2px;
+  font-style:italic;
+  margin:0;
+  opacity:0;
+  animation:fadeIn .8s ease .3s forwards;
+}
+.salon-slogan::before{content:"— ";}
+.salon-slogan::after{content:" —";}
+
+/* RANDEVU MODAL */
+#randevu-modal{
+  display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(20,10,0,0.8);z-index:99999;
+  align-items:center;justify-content:center;
+  backdrop-filter:blur(6px);
+}
+#randevu-modal.acik{display:flex;animation:overlayGir .25s ease;}
+.modal-kart{
+  background:linear-gradient(160deg,#fffdf8,#fff8ee);
+  border-radius:20px;padding:28px 24px;
+  width:93%;max-width:430px;
+  border:1px solid rgba(200,169,110,0.5);
+  position:relative;max-height:92vh;overflow-y:auto;
+  animation:modalGir .35s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 20px 60px rgba(90,62,10,0.3);
+}
+.modal-kart::-webkit-scrollbar{width:4px;}
+.modal-kart::-webkit-scrollbar-thumb{background:#c8a86e;border-radius:4px;}
+.modal-kapat{
+  position:absolute;top:12px;right:14px;
+  background:rgba(139,105,20,0.1);border:none;border-radius:50%;
+  width:30px;height:30px;font-size:15px;cursor:pointer;
+  color:#8B6914;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.modal-kapat:hover{background:rgba(139,105,20,0.2);transform:rotate(90deg);}
+.modal-baslik{font-size:19px;font-weight:800;color:#3a2200;margin-bottom:4px;}
+.modal-hizmet{
+  display:inline-block;font-size:12px;color:#8B6914;font-weight:700;
+  background:rgba(200,169,110,0.12);border:1px solid rgba(200,169,110,0.35);
+  border-radius:20px;padding:5px 14px;margin-bottom:20px;
+}
+.form-grup{display:flex;flex-direction:column;gap:13px;}
+.input-sarmali label{
+  display:block;font-size:10px;font-weight:800;
+  color:#9a7a50;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;
+}
+.input-sarmali{position:relative;}
+.input-sarmali .ikon{
+  position:absolute;left:12px;bottom:11px;
+  font-size:15px;pointer-events:none;
+}
+.form-input{
+  width:100%;padding:11px 13px 11px 38px;
+  border:1.5px solid #e8d5a0;border-radius:10px;
+  font-size:14px;font-family:"Montserrat",sans-serif;color:#3a2200;
+  background:#fff;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
+}
+.form-input:focus{border-color:#c8a86e;box-shadow:0 0 0 3px rgba(200,169,110,0.15);}
+.form-input::placeholder{color:#c4a070;opacity:0.7;}
+.form-input.hata{border-color:#e53935;animation:salla .4s ease;}
+select.form-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8a86e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;}
+select.form-input option:disabled{color:#bbb;background:#f5f5f5;}
+textarea.form-input{resize:none;padding-top:11px;}
+.yukleniyor-satir{
+  display:none;text-align:center;padding:8px;
+  font-size:12px;color:#9a7a50;
+  background:rgba(200,169,110,0.06);border-radius:8px;
+  border:1px dashed rgba(200,169,110,0.35);
+}
+.spinner-kucuk{
+  display:inline-block;width:13px;height:13px;
+  border:2px solid #e8d5a0;border-top-color:#c8a86e;
+  border-radius:50%;animation:spin .7s linear infinite;
+  vertical-align:middle;margin-right:5px;
+}
+.gonder-btn{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,#7a5810,#c8a030);
+  border:none;border-radius:12px;color:#fff;
+  font-size:14px;font-weight:800;cursor:pointer;
+  font-family:"Montserrat",sans-serif;letter-spacing:0.3px;
+  transition:all .2s;margin-top:4px;position:relative;overflow:hidden;
+}
+.gonder-btn::before{
+  content:"";position:absolute;top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+  animation:btnShin 2s infinite;
+}
+.gonder-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(120,80,10,0.4);}
+.gonder-btn:active{transform:translateY(0);}
+.gonder-btn:disabled{opacity:0.65;cursor:not-allowed;transform:none;}
+.modal-alt{font-size:11px;color:#b89a6a;text-align:center;margin-top:10px;line-height:1.5;}
+
+/* BAŞARI EKRANI */
+.basari{display:none;text-align:center;padding:16px 0;}
+.basari-cember{
+  width:68px;height:68px;border-radius:50%;
+  background:linear-gradient(135deg,#43a047,#81c784);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;font-size:30px;color:#fff;
+  animation:checkBounce .5s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 4px 18px rgba(67,160,71,0.3);
+}
+@keyframes checkBounce{from{transform:scale(0) rotate(-45deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.basari h3{font-size:18px;font-weight:800;color:#2e7d32;margin-bottom:8px;}
+.basari p{font-size:13px;color:#6a8f6c;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-ic">
+    <div class="header-sol">
+      <div class="header-logo-cerceve">
+        <img src="logo.jpeg" alt="Radiosa Beauty Center"/>
+      </div>
+      <div class="header-marka">
+        <div class="header-marka-ad">RADIOSA</div>
+        <div class="header-marka-alt">BEAUTY CENTER</div>
+      </div>
+    </div>
+    <div class="header-sag">
+      <div class="header-online">
+        Online Randevu
+        <span>Sistemi</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- SALON SLOGAN -->
+<div class="salon-title">
+  <div class="container">
+    <div class="col-12" style="padding:16px 15px 14px;text-align:center;">
+      <p class="salon-slogan">Güzelliğiniz, Bizim Sanatımız</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+
+      <!-- INSTAGRAM -->
+      <div class="insta-bolum">
+        <iframe src="https://www.instagram.com/radiosabeauty/embed" loading="lazy"
+          allowtransparency="true" allowfullscreen="true" scrolling="no"
+          style="min-height:unset;"></iframe>
+        <hr/>
+      </div>
+
+      <div style="margin-top:12px;">
+        
+
+        <div id="accordion">
+
+          <!-- KAS BIYIK -->
+          <div class="panel" style="animation-delay:.05s">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#" onclick="togglePanel(this,'kas');return false;" class="">Kaş &amp; Bıyık Hizmetleri</a>
+              </h4>
+            </div>
+            <div class="panel-body" id="panel-kas">
+              <div class="hizmet-satir"><span class="hizmet-adi">Normal Kaş Alımı</span><span class="hizmet-fiyat">200 TL</span><button class="randevu-btn" onclick="modalAc('Normal Kaş Alımı')">Randevu Al</button></div>
+              <div class="hizmet-satir"><span class="hizmet-adi">Bıyık Alımı</span><span class="hizmet-fiyat">100 TL</span><button class="randevu-btn" onclick="modalAc('Bıyık Alımı')">Randevu Al</button></div>
+              <div class="hizmet-satir"><span class="hizmet-adi">Kaş + Bıyık</span><span class="hizmet-fiyat">250 TL</span><button class="randevu-btn" onclick="modalAc('Kaş + Bıyık')">Randevu Al</button></div>
+              <div class="hizmet-satir"><span class="hizmet-adi">Altın Oran Kaş Alımı</span><span class="hizmet-fiyat">300 TL</span><button class="randevu-btn" onclick="modalAc('Altın Oran Kaş Alımı')">Randevu Al</button></div>
+              <div class="hizmet-satir"><span class="hizmet-adi">Tüm Yüz İple Alım</span><span class="hizmet-fiyat">400 TL</span><button class="randevu-btn" onclick="modalAc('Tüm Yüz İple Alım')">Randevu Al</button></div>
+            </div>
+          </div>
+
+          <!-- CILT BAKIM -->
+          <div class="panel" style="animation-delay:.1s">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#" onclick="togglePanel(this,'cilt');return false;" class="kapali">Cilt Bakım Hizmetleri</a>
+              </h4>
+            </div>
+            <div class="panel-body" id="panel-cilt" style="display:none">
+              <div class="hizmet-satir"><span class="hizmet-adi">Klasik Cilt Bakımı</span><span class="hizmet-fiyat">600 TL</span><button class="randevu-btn" onclick="modalAc('Klasik Cilt Bakımı')">Randevu Al</button></div>
+              <div class="hizmet-satir"><span class="hizmet-adi">Medikal Cilt Bakımı</span><span class="hizmet-fiyat">850 TL</span><button class="randevu-btn" onclick="modalAc('Medikal Cilt Bakımı')">Randevu Al</button></div>
+              <div class="hizmet-satir"><span class="hizmet-adi">VIP Cilt Bakımı</span><span class="hizmet-fiyat">1.200 TL</span><button class="randevu-btn" onclick="modalAc('VIP Cilt Bakımı')">Randevu Al</button></div>
+            </div>
+          </div>
+
+          <!-- EL TIRNAK -->
+          <div class="panel" style="animation-delay:.15s">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#" onclick="togglePanel(this,'tirnak');return false;" class="kapali">El &amp; Tırnak Hizmetleri</a>
+              </h4>
+            </div>
+            <div class="panel-body" id="panel-tirnak" style="display:none">
+              <div class="hizmet-satir"><span class="hizmet-adi">Nail Art</span><span class="hizmet-fiyat">50-200 TL</span><button class="randevu-btn" onclick="modalAc('Nail Art')">Randevu Al</button></div>
+              <div class="hizmet-satir"><span class="hizmet-adi">Protez Tek Parmak</span><span class="hizmet-fiyat">150 TL</span><button class="randevu-btn" onclick="modalAc('Protez Tek Parmak')">Randevu Al</button></div>
+              <div class="hizmet-satir"><span class="hizmet-adi">Manikür</span><span class="hizmet-fiyat">400 TL</span><button class="randevu-btn" onclick="modalAc('Manikür')">Randevu Al</button></div>
+            </div>
+          </div>
+
+          <!-- CIKARMA -->
+          <div class="panel" style="animation-delay:.2s">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#" onclick="togglePanel(this,'cikarma');return false;" class="kapali">Çıkarma İşlemleri</a>
+              </h4>
+            </div>
+            <div class="panel-body" id="panel-cikarma" style="display:none">
+              <div class="hizmet-satir"><span class="hizmet-adi">Kalıcı Oje Çıkarma</span><span class="hizmet-fiyat">500 TL</span><button class="randevu-btn" onclick="modalAc('Kalıcı Oje Çıkarma')">Randevu Al</button></div>
+              <div class="hizmet-notu">(Manikür hediye)</div>
+              <div class="hizmet-satir"><span class="hizmet-adi">Protez Tırnak Çıkarma</span><span class="hizmet-fiyat">500 TL</span><button class="randevu-btn" onclick="modalAc('Protez Tırnak Çıkarma')">Randevu Al</button></div>
+              <div class="hizmet-notu">(Manikür hediye)</div>
+            </div>
+          </div>
+
+          <!-- UYGULAMALAR -->
+          <div class="panel" style="animation-delay:.25s">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#" onclick="togglePanel(this,'uygulama');return false;" class="kapali">Uygulamalar</a>
+              </h4>
+            </div>
+            <div class="panel-body" id="panel-uygulama" style="display:none">
+              <div class="hizmet-satir"><span class="hizmet-adi">Kalıcı Oje</span><span class="hizmet-fiyat">650 TL</span><button class="randevu-btn" onclick="modalAc('Kalıcı Oje')">Randevu Al</button></div>
+              <div class="hizmet-satir"><span class="hizmet-adi">Protez Tırnak</span><span class="hizmet-fiyat">1.000 TL</span><button class="randevu-btn" onclick="modalAc('Protez Tırnak')">Randevu Al</button></div>
+            </div>
+          </div>
+
+          <!-- MODELLER -->
+          <div class="panel" style="animation-delay:.3s">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a href="#" onclick="togglePanel(this,'modeller');return false;" class="kapali">Protez ve Kalıcı Oje Modelleri</a>
+              </h4>
+            </div>
+            <div class="panel-body" id="panel-modeller" style="display:none">
+              <div class="hizmet-satir"><span class="hizmet-adi">İnci Tozu</span><span class="hizmet-fiyat">1.250 TL</span><button class="randevu-btn" onclick="modalAc('İnci Tozu')">Randevu Al</button></div>
+              <div class="hizmet-satir"><span class="hizmet-adi">French</span><span class="hizmet-fiyat">1.200 TL</span><button class="randevu-btn" onclick="modalAc('French')">Randevu Al</button></div>
+            </div>
+          </div>
+
+        </div><!-- /accordion -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="logo.jpeg" alt="Radiosa Beauty Salon"/>
+  </div>
+  <p class="footer-tagline">Güzelliğinize ışıltı katıyoruz</p>
+  <div class="footer-grid">
+    <div class="footer-kolon">
+      <div class="footer-kolon-baslik">Adres</div>
+      <p>Gazi Cd. 45A Tayfurlar Rezidans</p>
+      <p>Silvan / Diyarbakir 21640</p>
+    </div>
+    <div class="footer-kolon">
+      <div class="footer-kolon-baslik">Instagram</div>
+      <p><a href="https://www.instagram.com/radiosabeauty/" target="_blank">@radiosabeauty</a></p>
+    </div>
+    <div class="footer-kolon">
+      <div class="footer-kolon-baslik">Iletisim</div>
+      <p><a href="tel:05392699590">0539 269 95 90</a></p>
+      <p><a href="mailto:radiosabeautysalon@gmail.com">radiosabeautysalon@gmail.com</a></p>
+      <a href="https://wa.me/905392699590" target="_blank" class="wp-link">WhatsApp ile Yaz</a>
+    </div>
+  </div>
+  <div class="footer-alt">
+    <p>© 2026 Radiosa Beauty — Tüm Hakları Saklıdır</p>
+    <a href="radiosa-admin.html" class="footer-admin-link">Yönetim</a>
+  </div>
+</footer>
+
+<!-- RANDEVU MODAL -->
+<div id="randevu-modal">
+  <div class="modal-kart">
+    <button class="modal-kapat" onclick="modalKapat()">x</button>
+
+    <div id="form-bolum">
+      <div class="modal-baslik">Randevu Al</div>
+      <div class="modal-hizmet" id="modal-hizmet-adi">Hizmet</div>
+
+      <div class="form-grup">
+        <div class="input-sarmali">
+          <label>Ad Soyad</label>
+          <span class="ikon">👤</span>
+          <input id="form-adi" type="text" class="form-input" placeholder="Adınız Soyadınız"/>
+        </div>
+        <div class="input-sarmali">
+          <label>Telefon</label>
+          <span class="ikon">📞</span>
+          <input id="form-tel" type="tel" class="form-input" placeholder="05xx xxx xx xx"/>
+        </div>
+        <div class="input-sarmali">
+          <label>Tarih</label>
+          <span class="ikon">📅</span>
+          <input id="form-tarih" type="date" class="form-input"/>
+        </div>
+        <div class="yukleniyor-satir" id="saat-yukleniyor">
+          <span class="spinner-kucuk"></span> Müsait saatler kontrol ediliyor...
+        </div>
+        <div class="input-sarmali">
+          <label>Saat</label>
+          <span class="ikon">⏰</span>
+          <select id="form-saat" class="form-input">
+            <option value="">Önce tarih seçin</option>
+            <option value="09:00">09:00</option><option value="09:30">09:30</option>
+            <option value="10:00">10:00</option><option value="10:30">10:30</option>
+            <option value="11:00">11:00</option><option value="11:30">11:30</option>
+            <option value="12:00">12:00</option><option value="13:00">13:00</option>
+            <option value="13:30">13:30</option><option value="14:00">14:00</option>
+            <option value="14:30">14:30</option><option value="15:00">15:00</option>
+            <option value="15:30">15:30</option><option value="16:00">16:00</option>
+            <option value="16:30">16:30</option><option value="17:00">17:00</option>
+            <option value="17:30">17:30</option><option value="18:00">18:00</option>
+          </select>
+        </div>
+        <div class="input-sarmali">
+          <label>Not (Istege Bagli)</label>
+          <span class="ikon">📝</span>
+          <textarea id="form-not" class="form-input" rows="2" placeholder="Eklemek istediğiniz notlar..."></textarea>
+        </div>
+        <button class="gonder-btn" id="gonder-btn" onclick="randevuGonder()">
+          Randevu Gonder ve WhatsApp a Gec
+        </button>
+      </div>
+      <p class="modal-alt">Randevunuz kaydedilecek ve WhatsApp'tan onay mesajı alacaksınız.</p>
+    </div>
+
+    <div class="basari" id="basari-bolum">
+      <div class="basari-cember">✓</div>
+      <h3>Randevunuz Alındı!</h3>
+      <p>WhatsApp'a yönlendiriliyorsunuz...<br/>Sizi bekliyoruz!</p>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+// ACCORDION
+function togglePanel(link, id) {
+  var panel = document.getElementById('panel-' + id);
+  var acik = panel.style.display !== 'none';
+  panel.style.display = acik ? 'none' : 'block';
+  link.classList.toggle('kapali', !acik);
+}
+
+// MODAL AC
+window.modalAc = function(hizmet) {
+  document.getElementById('modal-hizmet-adi').textContent = hizmet;
+  document.getElementById('form-adi').value = '';
+  document.getElementById('form-tel').value = '';
+  document.getElementById('form-tarih').value = '';
+  document.getElementById('form-not').value = '';
+  document.getElementById('form-tarih').min = new Date().toISOString().split('T')[0];
+  document.getElementById('form-bolum').style.display = 'block';
+  document.getElementById('basari-bolum').style.display = 'none';
+  document.getElementById('gonder-btn').disabled = false;
+  document.getElementById('gonder-btn').textContent = 'Randevu Gonder ve WhatsApp a Gec';
+  saatleriSifirla();
+  document.getElementById('randevu-modal').classList.add('acik');
+  window._seciliHizmet = hizmet;
+};
+
+window.modalKapat = function() {
+  document.getElementById('randevu-modal').classList.remove('acik');
+};
+
+document.getElementById('randevu-modal').addEventListener('click', function(e){
+  if(e.target === this) window.modalKapat();
+});
+
+function saatleriSifirla() {
+  var sel = document.getElementById('form-saat');
+  sel.value = '';
+  sel.disabled = true;
+  Array.from(sel.options).forEach(function(o){
+    o.disabled = false;
+    o.textContent = o.value || 'Once tarih secin';
+    o.style.color = '';
+    o.style.background = '';
+  });
+}
+
+// Admin kisayolu
+document.addEventListener('keydown', function(e){
+  if(e.ctrlKey && e.shiftKey && e.key === 'A') window.location.href = 'radiosa-admin.html';
+});
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBtTdxfJnFmnF_frYM9wjRTR7tsNHAtV_E",
+  authDomain: "radiosa-d1fd9.firebaseapp.com",
+  projectId: "radiosa-d1fd9",
+  storageBucket: "radiosa-d1fd9.firebasestorage.app",
+  messagingSenderId: "1037308750923",
+  appId: "1:1037308750923:web:c2afba11aef7d04090b1ce"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Tarih degisince dolu saatleri cek
+document.getElementById('form-tarih').addEventListener('change', async function(){
+  var tarih = this.value;
+  if(!tarih){ saatleriSifirla(); return; }
+  var sel = document.getElementById('form-saat');
+  sel.disabled = true;
+  sel.options[0].textContent = 'Yükleniyor...';
+  document.getElementById('saat-yukleniyor').style.display = 'block';
+  try {
+    var snap = await getDocs(query(
+      collection(db, 'randevular'),
+      where('tarih', '==', tarih),
+      where('durum', 'in', ['bekliyor', 'onaylandi'])
+    ));
+    var dolu = new Set();
+    snap.forEach(function(d){ dolu.add(d.data().saat); });
+    Array.from(sel.options).forEach(function(o){
+      if(!o.value){ o.textContent = 'Saat Secin'; return; }
+      if(dolu.has(o.value)){
+        o.disabled = true;
+        o.textContent = o.value + ' — Dolu';
+        o.style.color = '#bbb';
+        o.style.background = '#f5f5f5';
+      } else {
+        o.disabled = false;
+        o.textContent = o.value;
+        o.style.color = '#2e7d32';
+        o.style.background = '';
+      }
+    });
+  } catch(e) {
+    Array.from(sel.options).forEach(function(o){
+      if(!o.value){ o.textContent = 'Saat Secin'; return; }
+      o.disabled = false; o.textContent = o.value; o.style.color = '';
+    });
+  }
+  document.getElementById('saat-yukleniyor').style.display = 'none';
+  sel.disabled = false;
+});
+
+// RANDEVU GONDER
+window.randevuGonder = async function(){
+  var adi   = document.getElementById('form-adi').value.trim();
+  var tel   = document.getElementById('form-tel').value.trim();
+  var tarih = document.getElementById('form-tarih').value;
+  var saat  = document.getElementById('form-saat').value;
+  var not   = document.getElementById('form-not').value.trim();
+  var hizmet = window._seciliHizmet || '';
+
+  function hatali(id){ var el=document.getElementById(id); el.classList.add('hata'); setTimeout(function(){el.classList.remove('hata');},600); el.focus(); }
+
+  if(!adi)  { hatali('form-adi'); return; }
+  if(!tel || tel.replace(/\D/g,'').length < 10){ hatali('form-tel'); return; }
+  if(!tarih){ hatali('form-tarih'); return; }
+  if(!saat) { hatali('form-saat'); return; }
+
+  var btn = document.getElementById('gonder-btn');
+  btn.disabled = true;
+  btn.textContent = 'Kaydediliyor...';
+
+  try {
+    // Cakisma kontrol
+    var check = await getDocs(query(
+      collection(db, 'randevular'),
+      where('tarih','==',tarih),
+      where('saat','==',saat),
+      where('durum','in',['bekliyor','onaylandi'])
+    ));
+    if(!check.empty){
+      alert('Bu saat dolu! Lütfen başka bir saat seçin.');
+      btn.disabled = false;
+      btn.textContent = 'Randevu Gönder ve WhatsApp\'a Geç';
+      document.getElementById('form-tarih').dispatchEvent(new Event('change'));
+      return;
+    }
+
+    // Firebase kaydet
+    await addDoc(collection(db, 'randevular'), {
+      musteriAdi: adi, telefon: tel, hizmet: hizmet,
+      tarih: tarih, saat: saat, not: not,
+      durum: 'bekliyor', tarih_kayit: serverTimestamp()
+    });
+
+    // Basari ekrani
+    document.getElementById('form-bolum').style.display = 'none';
+    document.getElementById('basari-bolum').style.display = 'block';
+
+    // Tarih TR formati
+    var d = new Date(tarih + 'T00:00:00');
+    var aylar = ['Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'];
+    var tarihTR = d.getDate() + ' ' + aylar[d.getMonth()] + ' ' + d.getFullYear();
+
+    // WP mesaj - simgesiz, duzgun Turkce
+    var satirlar = [
+      'Merhaba! Radiosa Beauty Salon için randevu almak istiyorum.',
+      '',
+      'Ad Soyad: ' + adi,
+      'Hizmet: ' + hizmet,
+      'Tarih: ' + tarihTR,
+      'Saat: ' + saat
+    ];
+    if(not) satirlar.push('Not: ' + not);
+
+    var wpMesaj = encodeURIComponent(satirlar.join('\n'));
+
+    setTimeout(function(){
+      window.open('https://wa.me/905392699590?text=' + wpMesaj, '_blank');
+      setTimeout(function(){ window.modalKapat(); }, 1200);
+    }, 1500);
+
+  } catch(e) {
+    var wpMesaj = encodeURIComponent('Merhaba! ' + hizmet + ' icin randevu almak istiyorum. Ad: ' + adi + ', Tel: ' + tel);
+    window.open('https://wa.me/905392699590?text=' + wpMesaj, '_blank');
+    window.modalKapat();
+  }
+};
+</script>
+</body>
+</html>

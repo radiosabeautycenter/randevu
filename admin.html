@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Radiosa Beauty - Admin Panel</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#1a1208;color:#f0e0c0;min-height:100vh;}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a1208,#2d1f0a);}
+.login-box{background:rgba(255,255,255,0.05);border:1px solid rgba(200,169,110,0.3);border-radius:16px;padding:40px;width:360px;text-align:center;}
+.login-box h2{font-size:22px;color:#f0d080;letter-spacing:3px;margin-bottom:6px;}
+.login-box p{font-size:11px;color:rgba(240,208,128,0.5);letter-spacing:2px;margin-bottom:30px;}
+.login-box input{width:100%;padding:12px 16px;background:rgba(255,255,255,0.07);border:1px solid rgba(200,169,110,0.3);border-radius:8px;color:#f0e0c0;font-size:14px;margin-bottom:12px;outline:none;transition:.2s;}
+.login-box input:focus{border-color:#c8a86e;background:rgba(255,255,255,0.1);}
+.login-box button{width:100%;padding:13px;background:linear-gradient(135deg,#8B6914,#c8a86e);border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:.2s;}
+.login-box button:hover{background:linear-gradient(135deg,#5a3e0a,#8B6914);}
+.login-error{color:#ff6b6b;font-size:12px;margin-top:8px;display:none;}
+
+/* ADMIN LAYOUT */
+#admin-screen{display:none;}
+.admin-header{background:linear-gradient(135deg,#2d1f0a,#3d2a0e);border-bottom:1px solid rgba(200,169,110,0.3);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:100;}
+.admin-header h1{font-size:16px;color:#f0d080;letter-spacing:2px;font-weight:700;}
+.admin-header button{background:rgba(255,255,255,0.1);border:1px solid rgba(200,169,110,0.3);color:#c8a86e;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:12px;}
+.admin-header button:hover{background:rgba(200,169,110,0.2);}
+
+.admin-body{display:flex;margin-top:60px;min-height:calc(100vh - 60px);}
+
+/* SIDEBAR */
+.sidebar{width:220px;background:rgba(0,0,0,0.3);border-right:1px solid rgba(200,169,110,0.15);padding:20px 0;position:fixed;top:60px;bottom:0;overflow-y:auto;}
+.sidebar-item{padding:12px 20px;cursor:pointer;font-size:13px;color:rgba(240,224,192,0.7);display:flex;align-items:center;gap:10px;transition:.2s;border-left:3px solid transparent;}
+.sidebar-item:hover{background:rgba(200,169,110,0.1);color:#f0d080;}
+.sidebar-item.active{background:rgba(200,169,110,0.15);color:#f0d080;border-left-color:#c8a86e;}
+.sidebar-badge{background:#c8a86e;color:#1a1208;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;margin-left:auto;}
+
+/* MAIN CONTENT */
+.main-content{margin-left:220px;padding:24px;flex:1;}
+
+/* PAGE */
+.page{display:none;}
+.page.active{display:block;}
+.page-title{font-size:20px;color:#f0d080;font-weight:700;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(200,169,110,0.2);}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:28px;}
+.stat-card{background:rgba(255,255,255,0.05);border:1px solid rgba(200,169,110,0.2);border-radius:12px;padding:20px;text-align:center;}
+.stat-card .num{font-size:36px;font-weight:700;color:#f0d080;}
+.stat-card .lbl{font-size:11px;color:rgba(240,208,128,0.6);letter-spacing:1px;margin-top:4px;}
+
+/* CARDS */
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.2);border-radius:12px;padding:20px;margin-bottom:16px;}
+.card-title{font-size:13px;color:#c8a86e;font-weight:700;letter-spacing:1px;margin-bottom:16px;text-transform:uppercase;}
+
+/* RANDEVU LİSTESİ */
+.randevu-item{background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);border-radius:10px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:16px;}
+.randevu-item.bekliyor{border-left:3px solid #f0d080;}
+.randevu-item.onaylandi{border-left:3px solid #4caf50;}
+.randevu-item.reddedildi{border-left:3px solid #f44336;}
+.randevu-info{flex:1;}
+.randevu-info .musteri-adi{font-size:15px;font-weight:700;color:#f0e0c0;margin-bottom:4px;}
+.randevu-info .detay{font-size:12px;color:rgba(240,208,128,0.6);display:flex;flex-wrap:wrap;gap:12px;margin-top:4px;}
+.randevu-info .detay span{display:flex;align-items:center;gap:4px;}
+.randevu-actions{display:flex;gap:8px;flex-shrink:0;}
+.btn{padding:7px 14px;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s;}
+.btn-onayla{background:#4caf50;color:#fff;}
+.btn-onayla:hover{background:#388e3c;}
+.btn-reddet{background:#f44336;color:#fff;}
+.btn-reddet:hover{background:#c62828;}
+.btn-wp{background:#25d366;color:#fff;}
+.btn-wp:hover{background:#128c7e;}
+.btn-sil{background:rgba(244,67,54,0.15);color:#f44336;border:1px solid rgba(244,67,54,0.3);}
+.btn-sil:hover{background:rgba(244,67,54,0.3);}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;}
+.badge-bekliyor{background:rgba(240,208,128,0.2);color:#f0d080;}
+.badge-onaylandi{background:rgba(76,175,80,0.2);color:#4caf50;}
+.badge-reddedildi{background:rgba(244,67,54,0.2);color:#f44336;}
+
+/* FİYAT YÖNETİMİ */
+.kategori-yonetim{background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.2);border-radius:12px;margin-bottom:16px;overflow:hidden;}
+.kategori-header-admin{padding:14px 18px;background:rgba(200,169,110,0.1);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(200,169,110,0.15);}
+.kategori-header-admin span{font-size:14px;font-weight:700;color:#f0d080;}
+.hizmet-row-admin{display:flex;align-items:center;padding:10px 18px;border-bottom:1px solid rgba(200,169,110,0.08);gap:12px;}
+.hizmet-row-admin:last-child{border-bottom:0;}
+.hizmet-row-admin .adi{flex:1;font-size:13px;color:#f0e0c0;}
+.hizmet-row-admin input[type="text"]{background:rgba(255,255,255,0.07);border:1px solid rgba(200,169,110,0.3);border-radius:6px;color:#f0e0c0;padding:6px 10px;font-size:13px;width:120px;outline:none;}
+.hizmet-row-admin input[type="text"]:focus{border-color:#c8a86e;}
+.btn-kaydet-fiyat{background:linear-gradient(135deg,#8B6914,#c8a86e);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;}
+.btn-kaydet-fiyat:hover{opacity:0.85;}
+.btn-hizmet-sil{background:rgba(244,67,54,0.15);color:#f44336;border:1px solid rgba(244,67,54,0.3);border-radius:6px;padding:6px 10px;font-size:11px;cursor:pointer;}
+
+/* YENİ HİZMET FORM */
+.yeni-hizmet-form{padding:16px 18px;background:rgba(200,169,110,0.05);border-top:1px solid rgba(200,169,110,0.15);display:flex;gap:10px;flex-wrap:wrap;}
+.yeni-hizmet-form input{background:rgba(255,255,255,0.07);border:1px solid rgba(200,169,110,0.3);border-radius:6px;color:#f0e0c0;padding:8px 12px;font-size:13px;outline:none;flex:1;min-width:140px;}
+.yeni-hizmet-form input::placeholder{color:rgba(240,208,128,0.3);}
+.btn-ekle{background:linear-gradient(135deg,#8B6914,#c8a86e);color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
+
+/* YENİ KATEGORİ */
+.yeni-kategori-form{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.yeni-kategori-form input{background:rgba(255,255,255,0.07);border:1px solid rgba(200,169,110,0.3);border-radius:8px;color:#f0e0c0;padding:10px 14px;font-size:13px;outline:none;flex:1;min-width:180px;}
+.yeni-kategori-form input::placeholder{color:rgba(240,208,128,0.3);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:#4caf50;color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;display:none;animation:slideIn .3s ease;}
+@keyframes slideIn{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+/* FILTER TABS */
+.filter-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.filter-tab{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid rgba(200,169,110,0.3);color:rgba(240,208,128,0.6);background:transparent;transition:.2s;}
+.filter-tab.active{background:rgba(200,169,110,0.2);color:#f0d080;border-color:#c8a86e;}
+.filter-tab:hover{border-color:#c8a86e;color:#f0d080;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px;color:rgba(240,208,128,0.4);}
+.empty-state .icon{font-size:40px;margin-bottom:12px;}
+.empty-state p{font-size:13px;}
+
+/* MÜŞTERİ */
+.musteri-kart{background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);border-radius:10px;padding:16px;display:flex;align-items:center;gap:16px;margin-bottom:10px;}
+.musteri-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#8B6914,#c8a86e);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0;}
+.musteri-bilgi{flex:1;}
+.musteri-bilgi .isim{font-size:14px;font-weight:700;color:#f0e0c0;}
+.musteri-bilgi .alt{font-size:12px;color:rgba(240,208,128,0.6);margin-top:3px;}
+
+/* MOBİL NAV */
+.mobil-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:linear-gradient(135deg,#2d1f0a,#3d2a0e);
+  border-top:1px solid rgba(200,169,110,0.25);
+  z-index:200;
+  padding:6px 0 8px;
+}
+.mobil-nav-ic{display:flex;justify-content:space-around;}
+.mobil-nav-item{
+  display:flex;flex-direction:column;align-items:center;
+  gap:3px;cursor:pointer;padding:4px 12px;
+  color:rgba(240,208,128,0.5);font-size:10px;
+  letter-spacing:0.5px;border:none;background:none;
+  font-family:inherit;transition:color .2s;
+}
+.mobil-nav-item.active{color:#f0d080;}
+.mobil-nav-item .nav-ikon{font-size:20px;}
+.mobil-nav-badge{
+  background:#c8a86e;color:#1a1208;
+  font-size:9px;font-weight:800;
+  padding:1px 5px;border-radius:8px;
+  position:absolute;top:-4px;right:-6px;
+}
+.mobil-nav-ikon-sarmali{position:relative;display:inline-block;}
+
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .main-content{margin-left:0;padding:16px 12px 80px;}
+  .admin-body{flex-direction:column;}
+  .mobil-nav{display:block;}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .stat-card{padding:14px 10px;}
+  .stat-card .num{font-size:28px;}
+  .randevu-item{flex-direction:column;align-items:flex-start;gap:10px;}
+  .randevu-actions{display:flex;flex-wrap:wrap;gap:6px;width:100%;}
+  .randevu-actions .btn{flex:1;text-align:center;padding:8px 6px;font-size:11px;}
+  .admin-header h1{font-size:13px;letter-spacing:1px;}
+  .admin-header{padding:0 12px;}
+  .page-title{font-size:16px;}
+  .kategori-yonetim{border-radius:8px;}
+  .hizmet-row-admin{flex-wrap:wrap;gap:8px;padding:10px 12px;}
+  .hizmet-row-admin .adi{width:100%;font-size:12px;}
+  .hizmet-row-admin input[type="text"]{width:100%;box-sizing:border-box;}
+  .yeni-hizmet-form{flex-direction:column;}
+  .yeni-hizmet-form input{min-width:unset;width:100%;}
+  .yeni-kategori-form{flex-direction:column;}
+  .musteri-kart{flex-wrap:wrap;}
+  .login-box{width:92%;padding:28px 20px;}
+  .filter-tabs{gap:6px;}
+  .filter-tab{padding:6px 10px;font-size:11px;}
+  .card{padding:14px 12px;}
+  .randevu-info .detay{gap:8px;}
+}
+@media(max-width:400px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .stat-card .num{font-size:24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <h2>RADIOSA</h2>
+    <p>BEAUTY SALON — ADMIN</p>
+    <input type="email" id="login-user" placeholder="Email adresi" autocomplete="email"/>
+    <input type="password" id="login-pass" placeholder="Şifre"/>
+    <button onclick="girisYap()">Giriş Yap</button>
+    <div class="login-error" id="login-error">Kullanıcı adı veya şifre hatalı!</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <div class="admin-header">
+    <h1>✦ RADIOSA ADMIN</h1>
+    <button onclick="cikisYap()">Çıkış Yap</button>
+  </div>
+  <div class="admin-body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-item active" onclick="sayfaGoster('dashboard')">📊 Dashboard</div>
+      <div class="sidebar-item" onclick="sayfaGoster('randevular')">📅 Randevular <span class="sidebar-badge" id="bekleyen-badge">0</span></div>
+      <div class="sidebar-item" onclick="sayfaGoster('fiyatlar')">💰 Fiyat Yönetimi</div>
+      <div class="sidebar-item" onclick="sayfaGoster('musteriler')">👥 Müşteriler</div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-title">📊 Dashboard</div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="num" id="stat-toplam">0</div><div class="lbl">TOPLAM RANDEVU</div></div>
+          <div class="stat-card"><div class="num" id="stat-bekleyen">0</div><div class="lbl">BEKLEYEN</div></div>
+          <div class="stat-card"><div class="num" id="stat-onaylanan">0</div><div class="lbl">ONAYLANAN</div></div>
+          <div class="stat-card"><div class="num" id="stat-musteri">0</div><div class="lbl">MÜŞTERİ</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Son Randevular</div>
+          <div id="son-randevular"></div>
+        </div>
+      </div>
+
+      <!-- RANDEVULAR -->
+      <div class="page" id="page-randevular">
+        <div class="page-title">📅 Randevular</div>
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="randevuFiltre('hepsi',this)">Hepsi</button>
+          <button class="filter-tab" onclick="randevuFiltre('bekliyor',this)">⏳ Bekleyen</button>
+          <button class="filter-tab" onclick="randevuFiltre('onaylandi',this)">✅ Onaylanan</button>
+          <button class="filter-tab" onclick="randevuFiltre('reddedildi',this)">❌ Reddedilen</button>
+        </div>
+        <div id="randevu-listesi"></div>
+      </div>
+
+      <!-- FİYATLAR -->
+      <div class="page" id="page-fiyatlar">
+        <div class="page-title">💰 Fiyat Yönetimi</div>
+        <div class="yeni-kategori-form">
+          <input type="text" id="yeni-kat-icon" placeholder="İkon (örn: 💅)" style="max-width:90px;"/>
+          <input type="text" id="yeni-kat-ad" placeholder="Yeni kategori adı..."/>
+          <button class="btn-ekle" onclick="kategoriEkle()">+ Kategori Ekle</button>
+        </div>
+        <div id="kategori-listesi-admin"></div>
+      </div>
+
+      <!-- MÜŞTERİLER -->
+      <div class="page" id="page-musteriler">
+        <div class="page-title">👥 Müşteriler</div>
+        <div id="musteri-listesi"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MOBİL ALT NAV -->
+<div class="mobil-nav" id="mobil-nav">
+  <div class="mobil-nav-ic">
+    <button class="mobil-nav-item active" onclick="sayfaGoster('dashboard')">
+      <span class="nav-ikon">📊</span>
+      <span>Dashboard</span>
+    </button>
+    <button class="mobil-nav-item" onclick="sayfaGoster('randevular')">
+      <span class="mobil-nav-ikon-sarmali">
+        <span class="nav-ikon">📅</span>
+        <span class="mobil-nav-badge" id="mobil-badge">0</span>
+      </span>
+      <span>Randevular</span>
+    </button>
+    <button class="mobil-nav-item" onclick="sayfaGoster('fiyatlar')">
+      <span class="nav-ikon">💰</span>
+      <span>Fiyatlar</span>
+    </button>
+    <button class="mobil-nav-item" onclick="sayfaGoster('musteriler')">
+      <span class="nav-ikon">👥</span>
+      <span>Müşteriler</span>
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, onSnapshot, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBtTdxfJnFmnF_frYM9wjRTR7tsNHAtV_E",
+  authDomain: "radiosa-d1fd9.firebaseapp.com",
+  projectId: "radiosa-d1fd9",
+  storageBucket: "radiosa-d1fd9.firebasestorage.app",
+  messagingSenderId: "1037308750923",
+  appId: "1:1037308750923:web:c2afba11aef7d04090b1ce"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Global data
+let tumRandevular = [];
+let aktifFiltre = "hepsi";
+
+// ===== AUTH DURUM TAKİP =====
+onAuthStateChanged(auth, (user) => {
+  if(user) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    verileriYukle();
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('admin-screen').style.display = 'none';
+  }
+});
+
+// ===== GİRİŞ =====
+window.girisYap = async function() {
+  const email = document.getElementById('login-user').value.trim();
+  const sifre = document.getElementById('login-pass').value;
+  const hata = document.getElementById('login-error');
+  const btn = document.querySelector('.login-box button');
+
+  if(!email || !sifre) { hata.textContent = 'Email ve şifre boş olamaz!'; hata.style.display = 'block'; return; }
+
+  btn.textContent = 'Giriş yapılıyor...';
+  btn.disabled = true;
+  hata.style.display = 'none';
+
+  try {
+    await signInWithEmailAndPassword(auth, email, sifre);
+  } catch(e) {
+    let mesaj = 'Giriş başarısız!';
+    if(e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
+      mesaj = 'Email veya şifre hatalı!';
+    } else if(e.code === 'auth/too-many-requests') {
+      mesaj = 'Çok fazla deneme! Lütfen bekleyin.';
+    } else if(e.code === 'auth/invalid-email') {
+      mesaj = 'Geçersiz email adresi!';
+    }
+    hata.textContent = mesaj;
+    hata.style.display = 'block';
+  }
+
+  btn.textContent = 'Giriş Yap';
+  btn.disabled = false;
+};
+
+window.cikisYap = async function() {
+  await signOut(auth);
+};
+
+// Enter ile giriş
+document.getElementById('login-pass').addEventListener('keydown', e => {
+  if(e.key === 'Enter') window.girisYap();
+});
+
+// ===== SAYFA =====
+window.sayfaGoster = function(sayfa) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.mobil-nav-item').forEach(s => s.classList.remove('active'));
+  document.getElementById('page-' + sayfa).classList.add('active');
+  // Sidebar
+  document.querySelectorAll('.sidebar-item').forEach(s => {
+    if(s.getAttribute('onclick') && s.getAttribute('onclick').includes("'" + sayfa + "'")) s.classList.add('active');
+  });
+  // Mobil nav
+  document.querySelectorAll('.mobil-nav-item').forEach(s => {
+    if(s.getAttribute('onclick') && s.getAttribute('onclick').includes("'" + sayfa + "'")) s.classList.add('active');
+  });
+};
+
+// ===== VERİ YÜKLE =====
+function verileriYukle() {
+  // Randevuları gerçek zamanlı dinle
+  const q = query(collection(db, "randevular"), orderBy("tarih", "desc"));
+  onSnapshot(q, (snapshot) => {
+    tumRandevular = [];
+    snapshot.forEach(d => tumRandevular.push({id: d.id, ...d.data()}));
+    statsGuncelle();
+    randevulariGoster(aktifFiltre);
+    sonRandevularGoster();
+    musterileriGoster();
+  });
+
+  // Kategorileri yükle
+  kategorileriYukle();
+}
+
+// ===== STATS =====
+function statsGuncelle() {
+  const bekleyen = tumRandevular.filter(r => r.durum === 'bekliyor').length;
+  const onaylanan = tumRandevular.filter(r => r.durum === 'onaylandi').length;
+  const musteriler = [...new Set(tumRandevular.map(r => r.telefon))].length;
+
+  document.getElementById('stat-toplam').textContent = tumRandevular.length;
+  document.getElementById('stat-bekleyen').textContent = bekleyen;
+  document.getElementById('stat-onaylanan').textContent = onaylanan;
+  document.getElementById('stat-musteri').textContent = musteriler;
+  document.getElementById('bekleyen-badge').textContent = bekleyen;
+  document.getElementById('mobil-badge').textContent = bekleyen;
+  document.getElementById('mobil-badge').style.display = bekleyen > 0 ? 'inline' : 'none';
+}
+
+// ===== RANDEVULAR =====
+function randevuKartHTML(r) {
+  const durumBadge = {
+    'bekliyor': '<span class="badge badge-bekliyor">⏳ Bekliyor</span>',
+    'onaylandi': '<span class="badge badge-onaylandi">✅ Onaylandı</span>',
+    'reddedildi': '<span class="badge badge-reddedildi">❌ Reddedildi</span>'
+  }[r.durum] || '<span class="badge badge-bekliyor">⏳ Bekliyor</span>';
+
+  const aksiyonlar = r.durum === 'bekliyor' ? `
+    <button class="btn btn-onayla" onclick="randevuGuncelle('${r.id}','onaylandi')">✅ Onayla</button>
+    <button class="btn btn-reddet" onclick="randevuGuncelle('${r.id}','reddedildi')">❌ Reddet</button>
+    <button class="btn btn-wp" onclick="wpAc('${r.telefon}','${r.musteriAdi}','${r.hizmet}','${r.tarih}','${r.saat}')">📱 WP</button>
+  ` : `<button class="btn btn-sil" onclick="randevuSil('${r.id}')">🗑️ Sil</button>`;
+
+  return `
+    <div class="randevu-item ${r.durum || 'bekliyor'}">
+      <div class="randevu-info">
+        <div class="musteri-adi">${r.musteriAdi || '-'} ${durumBadge}</div>
+        <div class="detay">
+          <span>📞 ${r.telefon || '-'}</span>
+          <span>💅 ${r.hizmet || '-'}</span>
+          <span>📅 ${r.tarih || '-'} ${r.saat ? '⏰ ' + r.saat : ''}</span>
+          ${r.not ? '<span>📝 ' + r.not + '</span>' : ''}
+        </div>
+      </div>
+      <div class="randevu-actions">${aksiyonlar}</div>
+    </div>`;
+}
+
+function randevulariGoster(filtre) {
+  aktifFiltre = filtre;
+  const liste = filtre === 'hepsi' ? tumRandevular : tumRandevular.filter(r => (r.durum || 'bekliyor') === filtre);
+  const el = document.getElementById('randevu-listesi');
+  if(liste.length === 0) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Randevu bulunamadı.</p></div>';
+  } else {
+    el.innerHTML = liste.map(r => randevuKartHTML(r)).join('');
+  }
+}
+
+function sonRandevularGoster() {
+  const son = tumRandevular.slice(0, 5);
+  const el = document.getElementById('son-randevular');
+  if(son.length === 0) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Henüz randevu yok.</p></div>';
+  } else {
+    el.innerHTML = son.map(r => randevuKartHTML(r)).join('');
+  }
+}
+
+window.randevuFiltre = function(filtre, btn) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  randevulariGoster(filtre);
+};
+
+window.randevuGuncelle = async function(id, durum) {
+  try {
+    await updateDoc(doc(db, "randevular", id), { durum });
+    toast(durum === 'onaylandi' ? '✅ Randevu onaylandı!' : '❌ Randevu reddedildi.');
+  } catch(e) { toast('Hata: ' + e.message, true); }
+};
+
+window.randevuSil = async function(id) {
+  if(!confirm('Bu randevuyu silmek istediğinize emin misiniz?')) return;
+  try {
+    await deleteDoc(doc(db, "randevular", id));
+    toast('🗑️ Randevu silindi.');
+  } catch(e) { toast('Hata: ' + e.message, true); }
+};
+
+window.wpAc = function(tel, adi, hizmet, tarih, saat) {
+  const temizTel = tel.replace(/\D/g,'').replace(/^0/,'90');
+  const mesaj = encodeURIComponent(`Merhaba ${adi} hanım! 👋\n\nRadiosa Beauty Salon olarak randevunuzu onayladık. ✅\n\n💅 Hizmet: ${hizmet}\n📅 Tarih: ${tarih}\n⏰ Saat: ${saat}\n\nSizi bekliyoruz! 🌸`);
+  window.open(`https://wa.me/${temizTel}?text=${mesaj}`, '_blank');
+};
+
+// ===== MÜŞTERİLER =====
+function musterileriGoster() {
+  const musteriler = {};
+  tumRandevular.forEach(r => {
+    if(!musteriler[r.telefon]) musteriler[r.telefon] = {adi: r.musteriAdi, telefon: r.telefon, sayi: 0};
+    musteriler[r.telefon].sayi++;
+  });
+  document.getElementById('stat-musteri').textContent = Object.keys(musteriler).length;
+  const el = document.getElementById('musteri-listesi');
+  const liste = Object.values(musteriler);
+  if(liste.length === 0) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">👥</div><p>Henüz müşteri yok.</p></div>';
+  } else {
+    el.innerHTML = liste.map(m => `
+      <div class="musteri-kart">
+        <div class="musteri-avatar">${(m.adi||'?')[0].toUpperCase()}</div>
+        <div class="musteri-bilgi">
+          <div class="isim">${m.adi || '-'}</div>
+          <div class="alt">📞 ${m.telefon} &nbsp;•&nbsp; ${m.sayi} randevu</div>
+        </div>
+        <button class="btn btn-wp" onclick="wpAc('${m.telefon}','${m.adi}','','','')">📱 WhatsApp</button>
+      </div>`).join('');
+  }
+}
+
+// ===== KATEGORİLER & FİYATLAR =====
+let kategoriler = [];
+
+async function kategorileriYukle() {
+  // Önce default kategorileri koy, sonra Firestore'dan güncelle
+  const defaultKat = [
+    {id:'kas', icon:'✂️', ad:'Kaş & Bıyık Hizmetleri', hizmetler:[
+      {id:'kas1',ad:'Normal Kaş Alımı',fiyat:'200'},
+      {id:'kas2',ad:'Bıyık Alımı',fiyat:'100'},
+      {id:'kas3',ad:'Kaş + Bıyık',fiyat:'250'},
+      {id:'kas4',ad:'Altın Oran Kaş Alımı',fiyat:'300'},
+      {id:'kas5',ad:'Tüm Yüz İple Alım',fiyat:'400'},
+    ]},
+    {id:'cilt', icon:'✨', ad:'Cilt Bakım Hizmetleri', hizmetler:[
+      {id:'cilt1',ad:'Klasik Cilt Bakımı',fiyat:'600'},
+      {id:'cilt2',ad:'Medikal Cilt Bakımı',fiyat:'850'},
+      {id:'cilt3',ad:'VIP Cilt Bakımı',fiyat:'1200'},
+    ]},
+    {id:'tirnak', icon:'💅', ad:'El & Tırnak Hizmetleri', hizmetler:[
+      {id:'t1',ad:'Nail Art',fiyat:'50-200'},
+      {id:'t2',ad:'Protez Tek Parmak',fiyat:'150'},
+      {id:'t3',ad:'Manikür',fiyat:'400'},
+    ]},
+    {id:'cikarma', icon:'🌸', ad:'Çıkarma İşlemleri', hizmetler:[
+      {id:'c1',ad:'Kalıcı Oje Çıkarma',fiyat:'500'},
+      {id:'c2',ad:'Protez Tırnak Çıkarma',fiyat:'500'},
+    ]},
+    {id:'uygulama', icon:'💎', ad:'Uygulamalar', hizmetler:[
+      {id:'u1',ad:'Kalıcı Oje',fiyat:'650'},
+      {id:'u2',ad:'Protez Tırnak',fiyat:'1000'},
+    ]},
+    {id:'modeller', icon:'✨', ad:'Protez ve Kalıcı Oje Modelleri', hizmetler:[
+      {id:'m1',ad:'İnci Tozu',fiyat:'1250'},
+      {id:'m2',ad:'French',fiyat:'1200'},
+    ]},
+  ];
+
+  try {
+    const snap = await getDocs(collection(db, "kategoriler"));
+    if(snap.empty) {
+      // İlk kez: default verileri Firebase'e yaz
+      for(const kat of defaultKat) {
+        await addDoc(collection(db, "kategoriler"), kat);
+      }
+      kategoriler = defaultKat;
+    } else {
+      kategoriler = snap.docs.map(d => ({...d.data(), fireId: d.id}));
+    }
+  } catch(e) {
+    kategoriler = defaultKat;
+  }
+  kategorileriRender();
+}
+
+function kategorileriRender() {
+  const el = document.getElementById('kategori-listesi-admin');
+  el.innerHTML = kategoriler.map((kat, ki) => `
+    <div class="kategori-yonetim">
+      <div class="kategori-header-admin">
+        <span>${kat.icon} ${kat.ad}</span>
+        <button class="btn-hizmet-sil" onclick="kategoriSil(${ki})">🗑️ Kategori Sil</button>
+      </div>
+      ${(kat.hizmetler||[]).map((h, hi) => `
+        <div class="hizmet-row-admin">
+          <span class="adi">${h.ad}</span>
+          <input type="text" value="${h.fiyat}" id="fiyat-${ki}-${hi}" placeholder="Fiyat (₺)"/>
+          <button class="btn-kaydet-fiyat" onclick="fiyatKaydet(${ki},${hi})">Kaydet</button>
+          <button class="btn-hizmet-sil" onclick="hizmetSil(${ki},${hi})">🗑️</button>
+        </div>`).join('')}
+      <div class="yeni-hizmet-form">
+        <input type="text" placeholder="Hizmet adı..." id="yeni-hizmet-ad-${ki}"/>
+        <input type="text" placeholder="Fiyat (₺)..." id="yeni-hizmet-fiyat-${ki}" style="max-width:130px;"/>
+        <button class="btn-ekle" onclick="hizmetEkle(${ki})">+ Ekle</button>
+      </div>
+    </div>`).join('');
+}
+
+window.fiyatKaydet = async function(ki, hi) {
+  const yeniFiyat = document.getElementById(`fiyat-${ki}-${hi}`).value;
+  kategoriler[ki].hizmetler[hi].fiyat = yeniFiyat;
+  await kategoriFirebaseGuncelle(ki);
+  // Ana sayfayı da güncelle
+  anaHizmetleriGuncelle();
+  toast('💰 Fiyat güncellendi!');
+};
+
+window.hizmetEkle = async function(ki) {
+  const ad = document.getElementById(`yeni-hizmet-ad-${ki}`).value.trim();
+  const fiyat = document.getElementById(`yeni-hizmet-fiyat-${ki}`).value.trim();
+  if(!ad || !fiyat) { toast('Ad ve fiyat boş olamaz!', true); return; }
+  kategoriler[ki].hizmetler.push({id: 'h'+Date.now(), ad, fiyat});
+  await kategoriFirebaseGuncelle(ki);
+  anaHizmetleriGuncelle();
+  kategorileriRender();
+  toast('✅ Hizmet eklendi!');
+};
+
+window.hizmetSil = async function(ki, hi) {
+  if(!confirm('Bu hizmeti silmek istediğinize emin misiniz?')) return;
+  kategoriler[ki].hizmetler.splice(hi, 1);
+  await kategoriFirebaseGuncelle(ki);
+  anaHizmetleriGuncelle();
+  kategorileriRender();
+  toast('🗑️ Hizmet silindi.');
+};
+
+window.kategoriEkle = async function() {
+  const icon = document.getElementById('yeni-kat-icon').value.trim() || '⭐';
+  const ad = document.getElementById('yeni-kat-ad').value.trim();
+  if(!ad) { toast('Kategori adı boş olamaz!', true); return; }
+  const yeniKat = {id:'k'+Date.now(), icon, ad, hizmetler:[]};
+  kategoriler.push(yeniKat);
+  try { await addDoc(collection(db, "kategoriler"), yeniKat); } catch(e) {}
+  kategorileriRender();
+  document.getElementById('yeni-kat-icon').value = '';
+  document.getElementById('yeni-kat-ad').value = '';
+  toast('✅ Kategori eklendi!');
+};
+
+window.kategoriSil = async function(ki) {
+  if(!confirm('Bu kategoriyi ve tüm hizmetlerini silmek istediğinize emin misiniz?')) return;
+  const kat = kategoriler[ki];
+  kategoriler.splice(ki, 1);
+  if(kat.fireId) {
+    try { await deleteDoc(doc(db, "kategoriler", kat.fireId)); } catch(e) {}
+  }
+  kategorileriRender();
+  toast('🗑️ Kategori silindi.');
+};
+
+async function kategoriFirebaseGuncelle(ki) {
+  const kat = kategoriler[ki];
+  if(kat.fireId) {
+    try { await updateDoc(doc(db, "kategoriler", kat.fireId), {hizmetler: kat.hizmetler}); } catch(e) {}
+  }
+}
+
+// Ana sitedeki hizmetleri localStorage ile güncelle (iki sayfa arası iletişim)
+function anaHizmetleriGuncelle() {
+  localStorage.setItem('radiosa_kategoriler', JSON.stringify(kategoriler));
+}
+
+// ===== TOAST =====
+function toast(mesaj, hata=false) {
+  const el = document.getElementById('toast');
+  el.textContent = mesaj;
+  el.style.background = hata ? '#f44336' : '#4caf50';
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 3000);
+}
+</script>
+</body>
+</html>
