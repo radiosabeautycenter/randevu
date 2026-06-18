@@ -4,6 +4,8 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <title>Radiosa Beauty Salon - Fiyat Listesi</title>
+<link rel="icon" type="image/jpeg" href="logo.jpeg"/>
+<link rel="apple-touch-icon" href="logo.jpeg"/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -268,9 +270,15 @@ footer{
   display:flex;align-items:center;justify-content:space-between;
   flex-wrap:wrap;gap:10px;
 }
-.footer-alt p{font-size:10px;opacity:0.35;margin:0;}
-.footer-admin-link{font-size:10px;opacity:0.12;color:#c8a86e;text-decoration:none;transition:opacity .2s;}
-.footer-admin-link:hover{opacity:0.4;}
+.footer-alt p,.footer-credit,.footer-admin-link{
+  font-size:10px;
+  color:rgba(240,220,180,0.35);
+  opacity:1;
+  margin:0;
+  font-weight:600;
+}
+.footer-admin-link{text-decoration:none;transition:color .2s;}
+.footer-admin-link:hover{color:rgba(240,220,180,0.55);}
 
 /* SLOGAN */
 .salon-slogan{
@@ -319,6 +327,59 @@ footer{
   background:rgba(200,169,110,0.12);border:1px solid rgba(200,169,110,0.35);
   border-radius:20px;padding:5px 14px;margin-bottom:20px;
 }
+.randevu-secim-ozet{
+  background:#fff8ee;border:1px solid #e8d5a0;border-radius:10px;
+  padding:10px 12px;margin-bottom:12px;font-size:12px;color:#6b4c0a;
+}
+.randevu-secim-ozet strong{display:block;margin-bottom:5px;color:#3a2200;}
+.randevu-secim-satir{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.randevu-secili-hizmetler{font-weight:700;line-height:1.5;}
+.tek-hizmet-kart{
+  border:1px solid #e8d5a0;background:#fff;border-radius:12px;
+  padding:14px;margin-bottom:14px;
+}
+.tek-hizmet-kart .etiket{font-size:10px;font-weight:800;color:#9a7a50;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:5px;}
+.tek-hizmet-kart .ad{font-size:16px;font-weight:800;color:#3a2200;line-height:1.35;}
+.tarih-kartlari{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.tarih-kart{
+  border:1px solid #e8d5a0;background:#fff;border-radius:12px;
+  padding:10px 6px;text-align:center;color:#3a2200;cursor:pointer;
+  font-family:"Montserrat",sans-serif;transition:all .2s;min-height:72px;
+}
+.tarih-kart .gun{display:block;font-size:10px;font-weight:800;color:#9a7a50;text-transform:uppercase;}
+.tarih-kart .num{display:block;font-size:22px;font-weight:800;color:#5a3e0a;line-height:1.2;}
+.tarih-kart .ay{display:block;font-size:11px;font-weight:700;color:#8B6914;}
+.tarih-kart.secili{border-color:#8B6914;background:#fff4d8;box-shadow:0 0 0 3px rgba(200,169,110,0.18);}
+.tarih-kart.kapali{opacity:.42;background:#f5eee2;cursor:not-allowed;}
+.tarih-kart.kapali .ay{color:#b66;}
+.saat-kartlari{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.saat-kart{border:1px solid #e8d5a0;background:#fff;border-radius:12px;padding:10px 8px;text-align:center;color:#3a2200;cursor:pointer;transition:all .2s;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-family:"Montserrat",sans-serif;}
+.saat-kart .saat-deger{font-size:15px;line-height:1.1;}
+.saat-kart .saat-durum{font-size:10px;color:#2e7d32;margin-top:4px;font-weight:800;}
+.saat-kart:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(139,105,20,0.12);}
+.saat-kart.secili{border-color:#8B6914;background:#fff4d8;box-shadow:0 0 0 3px rgba(200,169,110,0.18);color:#5a3e0a;}
+.saat-kart.kapali{opacity:.42;background:#f5eee2;cursor:not-allowed;box-shadow:none;}
+.saat-kart.kapali .saat-durum{color:#b66;}
+.saat-yardim{font-size:12px;color:#9a7a50;margin-top:6px;}
+.form-date-hidden{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;}
+.randevu-adimlar{display:flex;gap:6px;margin:0 0 16px;}
+.randevu-adim{
+  flex:1;height:5px;border-radius:999px;background:#ead8b4;
+  overflow:hidden;
+}
+.randevu-adim.aktif{background:#8B6914;}
+.randevu-step{display:none;}
+.randevu-step.aktif{display:block;animation:fadeIn .25s ease;}
+.randevu-step-baslik{font-size:15px;font-weight:800;color:#3a2200;margin:0 0 10px;}
+.randevu-step-yardim{font-size:12px;color:#9a7a50;margin:0 0 12px;line-height:1.5;}
+.randevu-nav{display:flex;gap:10px;margin-top:14px;}
+.randevu-nav button{
+  flex:1;border:none;border-radius:12px;padding:12px;
+  font-family:"Montserrat",sans-serif;font-weight:800;cursor:pointer;
+}
+.randevu-geri{background:#fff;border:1px solid #e8d5a0!important;color:#8B6914;}
+.randevu-ileri{background:linear-gradient(135deg,#7a5810,#c8a030);color:#fff;}
+.randevu-nav button:disabled{opacity:.45;cursor:not-allowed;}
 .form-grup{display:flex;flex-direction:column;gap:13px;}
 .input-sarmali label{
   display:block;font-size:10px;font-weight:800;
@@ -343,6 +404,22 @@ footer{
 select.form-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8a86e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;}
 select.form-input option:disabled{color:#bbb;background:#f5f5f5;}
 textarea.form-input{resize:none;padding-top:11px;}
+.estetisyen-hidden{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;}
+.estetisyen-kartlari{display:grid;grid-template-columns:1fr;gap:8px;}
+.estetisyen-kart{
+  width:100%;border:1.5px solid #e8d5a0;background:#fff;border-radius:13px;
+  padding:12px 14px;display:flex;align-items:center;gap:11px;
+  color:#3a2200;font-family:"Montserrat",sans-serif;text-align:left;
+  cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(139,105,20,0.05);
+}
+.estetisyen-kart:hover{transform:translateY(-1px);border-color:#c8a86e;box-shadow:0 8px 18px rgba(139,105,20,0.12);}
+.estetisyen-kart.secili{border-color:#8B6914;background:#fff4d8;box-shadow:0 0 0 3px rgba(200,169,110,0.18);}
+.estetisyen-avatar{
+  width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8B6914,#c8a86e);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;
+}
+.estetisyen-kart .ad{font-size:14px;font-weight:800;line-height:1.2;}
+.estetisyen-kart .alt{font-size:11px;color:#9a7a50;margin-top:2px;font-weight:600;}
 .yukleniyor-satir{
   display:none;text-align:center;padding:8px;
   font-size:12px;color:#9a7a50;
@@ -387,6 +464,27 @@ textarea.form-input{resize:none;padding-top:11px;}
 @keyframes checkBounce{from{transform:scale(0) rotate(-45deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
 .basari h3{font-size:18px;font-weight:800;color:#2e7d32;margin-bottom:8px;}
 .basari p{font-size:13px;color:#6a8f6c;line-height:1.6;}
+
+@media(max-width:767px){
+  .footer-grid{
+    flex-direction:column;
+    align-items:center;
+    gap:30px;
+  }
+  .footer-kolon{
+    width:min(100%,360px);
+    min-width:0;
+    text-align:left;
+  }
+  .footer-kolon-baslik{
+    width:100%;
+  }
+  .footer-alt{
+    width:min(100%,360px);
+    margin:0 auto;
+    align-items:flex-start;
+  }
+}
 </style>
 </head>
 <body>
@@ -554,6 +652,7 @@ textarea.form-input{resize:none;padding-top:11px;}
   </div>
   <div class="footer-alt">
     <p>© 2026 Radiosa Beauty — Tüm Hakları Saklıdır</p>
+    <span class="footer-credit">Designed by isotneder</span>
     <a href="admin.html" class="footer-admin-link">Yönetim</a>
   </div>
 </footer>
@@ -567,56 +666,76 @@ textarea.form-input{resize:none;padding-top:11px;}
       <div class="modal-baslik">Randevu Al</div>
       <div class="modal-hizmet" id="modal-hizmet-adi">Hizmet</div>
 
-      <div class="form-grup">
-        <div class="input-sarmali">
-          <label>Ad Soyad</label>
-          <span class="ikon">👤</span>
-          <input id="form-adi" type="text" class="form-input" placeholder="Adınız Soyadınız"/>
+      <div class="randevu-adimlar">
+        <div class="randevu-adim aktif"></div>
+        <div class="randevu-adim"></div>
+        <div class="randevu-adim"></div>
+      </div>
+
+      <div class="randevu-step aktif" data-step="0">
+        <div class="randevu-step-baslik">Hizmet seçimi</div>
+        <p class="randevu-step-yardim">Seçtiğiniz işlemle devam edin.</p>
+        <div class="tek-hizmet-kart">
+          <div class="etiket">Seçilen işlem</div>
+          <div class="ad" id="randevu-secilen-hizmetler">-</div>
         </div>
-        <div class="input-sarmali">
-          <label>Telefon</label>
-          <span class="ikon">📞</span>
-          <input id="form-tel" type="tel" class="form-input" placeholder="05xx xxx xx xx"/>
+      </div>
+
+      <div class="randevu-step" data-step="1">
+        <div class="randevu-step-baslik">İletişim bilgileri</div>
+        <div class="form-grup">
+          <div class="input-sarmali">
+            <label>Ad Soyad</label>
+            <span class="ikon">👤</span>
+            <input id="form-adi" type="text" class="form-input" placeholder="Adınız Soyadınız"/>
+          </div>
+          <div class="input-sarmali">
+            <label>Telefon</label>
+            <span class="ikon">📞</span>
+            <input id="form-tel" type="tel" class="form-input" placeholder="05xx xxx xx xx"/>
+          </div>
         </div>
-        <div class="input-sarmali">
-          <label>Estetisyen</label>
-          <span class="ikon">👩</span>
-          <select id="form-estetisyen" class="form-input" onchange="document.getElementById('form-tarih').dispatchEvent(new Event('change'))">
-            <option value="">Estetisyen Seçin</option>
-          </select>
+      </div>
+
+      <div class="randevu-step" data-step="2">
+        <div class="randevu-step-baslik">Randevu zamanı</div>
+        <div class="form-grup">
+          <div class="input-sarmali">
+            <label>Estetisyen</label>
+            <select id="form-estetisyen" class="estetisyen-hidden" onchange="document.getElementById('form-tarih').dispatchEvent(new Event('change'))">
+              <option value="">Estetisyen Seçin</option>
+            </select>
+            <div class="estetisyen-kartlari" id="estetisyen-kartlari"></div>
+          </div>
+          <div class="input-sarmali">
+            <label>Tarih</label>
+            <input id="form-tarih" type="date" class="form-input form-date-hidden"/>
+            <div class="tarih-kartlari" id="tarih-kartlari"></div>
+          </div>
+          <div class="yukleniyor-satir" id="saat-yukleniyor">
+            <span class="spinner-kucuk"></span> Müsait saatler kontrol ediliyor...
+          </div>
+          <div class="input-sarmali">
+            <label>Saat</label>
+            <span class="ikon">⏰</span>
+            <div class="saat-kartlari" id="saat-kartlari"></div>
+            <input id="form-saat" type="hidden" value="" />
+            <div class="saat-yardim">Tarih seçildikten sonra müsait saatlere dokunarak devam edin.</div>
+          </div>
+          <div class="input-sarmali">
+            <label>Not (İsteğe Bağlı)</label>
+            <span class="ikon">📝</span>
+            <textarea id="form-not" class="form-input" rows="2" placeholder="Eklemek istediğiniz notlar..."></textarea>
+          </div>
+          <button class="gonder-btn" id="gonder-btn" onclick="randevuGonder()">
+            Randevu Gönder ve WhatsApp'a Geç
+          </button>
         </div>
-        <div class="input-sarmali">
-          <label>Tarih</label>
-          <span class="ikon">📅</span>
-          <input id="form-tarih" type="date" class="form-input"/>
-        </div>
-        <div class="yukleniyor-satir" id="saat-yukleniyor">
-          <span class="spinner-kucuk"></span> Müsait saatler kontrol ediliyor...
-        </div>
-        <div class="input-sarmali">
-          <label>Saat</label>
-          <span class="ikon">⏰</span>
-          <select id="form-saat" class="form-input">
-            <option value="">Önce tarih seçin</option>
-            <option value="09:00">09:00</option><option value="09:30">09:30</option>
-            <option value="10:00">10:00</option><option value="10:30">10:30</option>
-            <option value="11:00">11:00</option><option value="11:30">11:30</option>
-            <option value="12:00">12:00</option><option value="13:00">13:00</option>
-            <option value="13:30">13:30</option><option value="14:00">14:00</option>
-            <option value="14:30">14:30</option><option value="15:00">15:00</option>
-            <option value="15:30">15:30</option><option value="16:00">16:00</option>
-            <option value="16:30">16:30</option><option value="17:00">17:00</option>
-            <option value="17:30">17:30</option><option value="18:00">18:00</option>
-          </select>
-        </div>
-        <div class="input-sarmali">
-          <label>Not (Istege Bagli)</label>
-          <span class="ikon">📝</span>
-          <textarea id="form-not" class="form-input" rows="2" placeholder="Eklemek istediğiniz notlar..."></textarea>
-        </div>
-        <button class="gonder-btn" id="gonder-btn" onclick="randevuGonder()">
-          Randevu Gonder ve WhatsApp a Gec
-        </button>
+      </div>
+
+      <div class="randevu-nav">
+        <button type="button" class="randevu-geri" id="randevu-geri" onclick="randevuAdimDegistir(-1)">Geri</button>
+        <button type="button" class="randevu-ileri" id="randevu-ileri" onclick="randevuAdimDegistir(1)">İleri</button>
       </div>
       <p class="modal-alt">Randevunuz kaydedilecek ve WhatsApp'tan onay mesajı alacaksınız.</p>
     </div>
@@ -641,11 +760,20 @@ function togglePanel(link, id) {
 
 // MODAL AC
 
-// Estetisyen mapping
-const estetisyenler = {
+function guvenliMetin(deger) {
+  return String(deger || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Estetisyen listesi Firestore'dan yuklenir; bu liste sadece ilk acilis yedegidir.
+window._estetisyenler = {
   'tirnak': ['Zehra Azarak'],
   'kas': ['Sultan Yaşan'],
-  'her': ['Zehra Azarak', 'Sultan Yaşan']
+  'her': ['Farketmez', 'Zehra Azarak', 'Sultan Yaşan']
 };
 
 const hizmetGrup = {
@@ -665,10 +793,25 @@ const hizmetGrup = {
   'French': 'tirnak'
 };
 
+window._hizmetEstetisyenGrup = {};
+window._randevuKategoriler = [];
+window._seciliHizmet = '';
+window._randevuAdim = 0;
+
+function varsayilanEstetisyenGrup(kat, hizmet) {
+  if(hizmet.estetisyenGrup) return hizmet.estetisyenGrup;
+  if(kat && kat.id === 'kas') return 'kas';
+  if(kat && kat.id === 'cilt') return 'her';
+  return hizmetGrup[hizmet.ad] || 'tirnak';
+}
+window.varsayilanEstetisyenGrup = varsayilanEstetisyenGrup;
+
 function estetisyenGuncelle(hizmet) {
-  const grup = hizmetGrup[hizmet] || 'her';
-  const liste = estetisyenler[grup];
+  const grup = window._hizmetEstetisyenGrup[hizmet] || hizmetGrup[hizmet] || 'her';
+  const kaynak = window._estetisyenler || {};
+  const liste = kaynak[grup] || kaynak.her || ['Farketmez'];
   const sel = document.getElementById('form-estetisyen');
+  const kartlar = document.getElementById('estetisyen-kartlari');
   sel.innerHTML = '<option value="">Estetisyen Seçin</option>';
   liste.forEach(function(e) {
     var opt = document.createElement('option');
@@ -683,10 +826,75 @@ function estetisyenGuncelle(hizmet) {
   } else {
     sel.disabled = false;
   }
+  if(kartlar) {
+    kartlar.innerHTML = liste.map(function(e) {
+      var harf = e === 'Farketmez' ? '✦' : e.charAt(0);
+      var alt = e === 'Farketmez' ? 'Uygun olan estetisyen' : 'Estetisyen';
+      var guvenli = guvenliMetin(e);
+      return '<button type="button" class="estetisyen-kart ' + (sel.value === e ? 'secili' : '') + '" data-estetisyen="' + guvenli + '" onclick="estetisyenSec(this.dataset.estetisyen)"><span class="estetisyen-avatar">' + guvenliMetin(harf) + '</span><span><span class="ad">' + guvenli + '</span><span class="alt">' + guvenliMetin(alt) + '</span></span></button>';
+    }).join('');
+  }
+};
+
+window.estetisyenSec = function(ad) {
+  const sel = document.getElementById('form-estetisyen');
+  sel.value = ad;
+  document.querySelectorAll('.estetisyen-kart').forEach(function(btn) {
+    btn.classList.toggle('secili', btn.dataset.estetisyen === ad);
+  });
+  document.getElementById('form-tarih').dispatchEvent(new Event('change'));
+};
+
+function seciliHizmetleriYaz() {
+  const metin = window._seciliHizmet || '';
+  document.getElementById('randevu-secilen-hizmetler').textContent = metin || '-';
+  document.getElementById('modal-hizmet-adi').textContent = metin || 'Hizmet';
+  estetisyenGuncelle(metin);
+  const tarih = document.getElementById('form-tarih');
+  if(tarih && tarih.value) tarih.dispatchEvent(new Event('change'));
 }
+
+function hatali(id){
+  var el = document.getElementById(id);
+  if(!el) return;
+  el.classList.add('hata');
+  setTimeout(function(){ el.classList.remove('hata'); }, 600);
+  el.focus();
+}
+
+function randevuAdimGoster(adim) {
+  window._randevuAdim = Math.max(0, Math.min(2, adim));
+  document.querySelectorAll('.randevu-step').forEach(function(el) {
+    el.classList.toggle('aktif', Number(el.dataset.step) === window._randevuAdim);
+  });
+  document.querySelectorAll('.randevu-adim').forEach(function(el, i) {
+    el.classList.toggle('aktif', i <= window._randevuAdim);
+  });
+  document.getElementById('randevu-geri').disabled = window._randevuAdim === 0;
+  document.getElementById('randevu-ileri').style.display = window._randevuAdim === 2 ? 'none' : 'block';
+  document.getElementById('gonder-btn').style.display = window._randevuAdim === 2 ? 'block' : 'none';
+}
+
+function randevuAdimDogrula() {
+  if(window._randevuAdim === 0 && !window._seciliHizmet) return false;
+  if(window._randevuAdim === 1) {
+    var adi = document.getElementById('form-adi').value.trim();
+    var tel = document.getElementById('form-tel').value.trim();
+    if(!adi) { hatali('form-adi'); return false; }
+    if(!tel || tel.replace(/\D/g,'').length < 10) { hatali('form-tel'); return false; }
+  }
+  return true;
+}
+
+window.randevuAdimDegistir = function(yon) {
+  if(yon > 0 && !randevuAdimDogrula()) return;
+  randevuAdimGoster(window._randevuAdim + yon);
+};
 
 window.modalAc = function(hizmet) {
   document.getElementById('modal-hizmet-adi').textContent = hizmet;
+  window._seciliHizmet = hizmet;
+  seciliHizmetleriYaz();
   document.getElementById('form-adi').value = '';
   document.getElementById('form-tel').value = '';
   document.getElementById('form-tarih').value = '';
@@ -695,10 +903,11 @@ window.modalAc = function(hizmet) {
   document.getElementById('form-bolum').style.display = 'block';
   document.getElementById('basari-bolum').style.display = 'none';
   document.getElementById('gonder-btn').disabled = false;
-  document.getElementById('gonder-btn').textContent = 'Randevu Gonder ve WhatsApp a Gec';
+  document.getElementById('gonder-btn').textContent = "Randevu Gönder ve WhatsApp'a Geç";
   saatleriSifirla();
+  tarihKartlariRender();
+  randevuAdimGoster(0);
   document.getElementById('randevu-modal').classList.add('acik');
-  window._seciliHizmet = hizmet;
 };
 
 window.modalKapat = function() {
@@ -710,16 +919,80 @@ document.getElementById('randevu-modal').addEventListener('click', function(e){
 });
 
 function saatleriSifirla() {
-  var sel = document.getElementById('form-saat');
-  sel.value = '';
-  sel.disabled = true;
-  Array.from(sel.options).forEach(function(o){
-    o.disabled = false;
-    o.textContent = o.value || 'Once tarih secin';
-    o.style.color = '';
-    o.style.background = '';
-  });
+  var saatInput = document.getElementById('form-saat');
+  saatInput.value = '';
+  var saatKartlari = document.getElementById('saat-kartlari');
+  if(saatKartlari) saatKartlari.innerHTML = '<div class="saat-yardim">Önce tarih seçin veya geçerli tarih için saatleri kontrol edin.</div>';
 }
+
+function saatKartlariRender(saatler, secili, doluSet) {
+  var el = document.getElementById('saat-kartlari');
+  if(!el) return;
+  if(!Array.isArray(saatler) || saatler.length === 0) {
+    el.innerHTML = '<div class="saat-yardim">Seçili tarihe uygun saat bulunamadı.</div>';
+    return;
+  }
+  el.innerHTML = saatler.map(function(saat) {
+    var kapali = doluSet && doluSet.has(saat);
+    var sinif = 'saat-kart' + (kapali ? ' kapali' : '') + (secili === saat ? ' secili' : '');
+    return '<button type="button" class="' + sinif + '" data-saat="' + saat + '" ' + (kapali ? 'disabled aria-disabled="true"' : 'onclick="saatSec(\'' + saat + '\')"') + '><span class="saat-deger">' + saat + '</span><span class="saat-durum">' + (kapali ? 'Dolu' : 'Müsait') + '</span></button>';
+  }).join('');
+}
+
+window.saatSec = function(saat) {
+  var saatInput = document.getElementById('form-saat');
+  if(!saatInput) return;
+  saatInput.value = saat;
+  document.querySelectorAll('.saat-kart').forEach(function(btn) {
+    btn.classList.toggle('secili', btn.dataset.saat === saat);
+  });
+};
+
+function pazarMi(tarih) {
+  if(!tarih) return false;
+  return new Date(tarih + 'T00:00:00').getDay() === 0;
+}
+window.pazarMi = pazarMi;
+
+function tarihISO(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function tarihKartlariRender() {
+  const el = document.getElementById('tarih-kartlari');
+  if(!el) return;
+  const gunler = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+  const aylar = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+  const bugun = new Date();
+  bugun.setHours(0,0,0,0);
+  let html = '';
+  for(let i = 0; i < 14; i++) {
+    const d = new Date(bugun);
+    d.setDate(bugun.getDate() + i);
+    const iso = tarihISO(d);
+    const kapali = d.getDay() === 0;
+    html += `
+      <button type="button" class="tarih-kart ${kapali ? 'kapali' : ''}" data-tarih="${iso}" ${kapali ? 'disabled aria-disabled="true"' : `onclick="tarihKartSec('${iso}')"`}>
+        <span class="gun">${gunler[d.getDay()]}</span>
+        <span class="num">${d.getDate()}</span>
+        <span class="ay">${kapali ? 'Kapalı' : aylar[d.getMonth()]}</span>
+      </button>`;
+  }
+  el.innerHTML = html;
+}
+
+window.tarihKartSec = function(tarih) {
+  if(pazarMi(tarih)) return;
+  const input = document.getElementById('form-tarih');
+  input.value = tarih;
+  document.querySelectorAll('.tarih-kart').forEach(function(btn) {
+    btn.classList.toggle('secili', btn.dataset.tarih === tarih);
+  });
+  input.dispatchEvent(new Event('change'));
+};
 
 // Admin kisayolu
 document.addEventListener('keydown', function(e){
@@ -757,11 +1030,56 @@ function fiyatYaz(fiyat) {
   return /tl|₺/i.test(metin) ? metin : metin + ' TL';
 }
 
+async function estetisyenleriYukle() {
+  const varsayilan = [
+    {ad:'Zehra Azarak', grup:'tirnak', aktif:true},
+    {ad:'Sultan Yaşan', grup:'kas', aktif:true}
+  ];
+  let liste = [];
+  try {
+    const snap = await getDocs(collection(db, 'estetisyenler'));
+    if(snap.empty) {
+      for(const e of varsayilan) await addDoc(collection(db, 'estetisyenler'), e);
+      liste = varsayilan;
+    } else {
+      snap.forEach(d => {
+        const data = d.data();
+        if(data.aktif !== false && data.ad) liste.push(data);
+      });
+    }
+  } catch(e) {
+    try {
+      liste = JSON.parse(localStorage.getItem('radiosa_estetisyenler') || '[]');
+    } catch(err) {
+      liste = varsayilan;
+    }
+  }
+  if(!liste.length) liste = varsayilan;
+
+  const tirnak = liste.filter(e => e.grup === 'tirnak').map(e => e.ad);
+  const kas = liste.filter(e => e.grup === 'kas').map(e => e.ad);
+  const tum = Array.from(new Set([...tirnak, ...kas, ...liste.map(e => e.ad)]));
+  window._estetisyenler = {
+    tirnak: tirnak.length ? tirnak : ['Zehra Azarak'],
+    kas: kas.length ? kas : ['Sultan Yaşan'],
+    her: ['Farketmez', ...tum]
+  };
+  localStorage.setItem('radiosa_estetisyenler', JSON.stringify(liste));
+}
+
 function fiyatListesiRender(kategoriler) {
   const accordion = document.getElementById('accordion');
   if(!accordion || !Array.isArray(kategoriler) || kategoriler.length === 0) return;
 
-  accordion.innerHTML = kategoriler.map(function(kat, ki) {
+  window._randevuKategoriler = kategorileriSirala(kategoriler);
+  window._hizmetEstetisyenGrup = {};
+  kategoriler.forEach(function(kat) {
+    (kat.hizmetler || []).forEach(function(h) {
+      if(h && h.ad) window._hizmetEstetisyenGrup[String(h.ad)] = window.varsayilanEstetisyenGrup(kat, h);
+    });
+  });
+
+  accordion.innerHTML = kategorileriSirala(kategoriler).map(function(kat, ki) {
     const panelId = String(kat.id || ('kat-' + ki)).replace(/[^a-zA-Z0-9_-]/g, '');
     const acik = ki === 0;
     const hizmetler = Array.isArray(kat.hizmetler) ? kat.hizmetler : [];
@@ -792,61 +1110,94 @@ function fiyatListesiRender(kategoriler) {
   }).join('');
 }
 
+function kategorileriSirala(liste) {
+  const siralama = ['kas', 'cilt', 'tirnak', 'cikarma', 'uygulama', 'modeller'];
+  return [...liste].sort((a, b) => {
+    const ai = siralama.indexOf(a.id);
+    const bi = siralama.indexOf(b.id);
+    if(ai === -1 && bi === -1) return String(a.ad || '').localeCompare(String(b.ad || ''), 'tr');
+    if(ai === -1) return 1;
+    if(bi === -1) return -1;
+    return ai - bi;
+  });
+}
+
+function localKategorileriOku() {
+  try {
+    const kayitli = JSON.parse(localStorage.getItem('radiosa_kategoriler') || 'null');
+    if(Array.isArray(kayitli)) return kayitli;
+    if(kayitli && Array.isArray(kayitli.kategoriler)) return kayitli.kategoriler;
+  } catch(e) {}
+  return [];
+}
+
 async function fiyatListesiYukle() {
+  const localListe = localKategorileriOku();
+  if(localListe.length) {
+    fiyatListesiRender(localListe);
+    return;
+  }
+
   try {
     const snap = await getDocs(collection(db, 'kategoriler'));
     if(!snap.empty) {
-      fiyatListesiRender(snap.docs.map(d => d.data()));
-      return;
+      const firestoreListe = snap.docs.map(d => d.data());
+      localStorage.setItem('radiosa_kategoriler', JSON.stringify({
+        updatedAt: Date.now(),
+        kategoriler: kategorileriSirala(firestoreListe)
+      }));
+      fiyatListesiRender(firestoreListe);
     }
-  } catch(e) {}
-
-  try {
-    const kayitli = JSON.parse(localStorage.getItem('radiosa_kategoriler') || '[]');
-    fiyatListesiRender(kayitli);
   } catch(e) {}
 }
 
+await estetisyenleriYukle();
 fiyatListesiYukle();
+
+window.addEventListener('storage', function(e) {
+  if(e.key === 'radiosa_kategoriler') fiyatListesiRender(localKategorileriOku());
+});
+
+function pazarMi(tarih) {
+  if(!tarih) return false;
+  return new Date(tarih + 'T00:00:00').getDay() === 0;
+}
 
 // Tarih degisince dolu saatleri cek
 document.getElementById('form-tarih').addEventListener('change', async function(){
   var tarih = this.value;
   if(!tarih){ saatleriSifirla(); return; }
-  var sel = document.getElementById('form-saat');
-  sel.disabled = true;
-  sel.options[0].textContent = 'Yükleniyor...';
+  if(pazarMi(tarih)) {
+    alert('Pazar günü kapalıyız. Lütfen başka bir gün seçin.');
+    this.value = '';
+    saatleriSifirla();
+    return;
+  }
   document.getElementById('saat-yukleniyor').style.display = 'block';
+  saatleriSifirla();
   try {
     var seciliEste = document.getElementById('form-estetisyen').value;
-    var randevuQuery = seciliEste
+    var randevuQuery = seciliEste && seciliEste !== 'Farketmez'
       ? query(collection(db, 'randevular'), where('tarih','==',tarih), where('estetisyen','==',seciliEste), where('durum','in',['bekliyor','onaylandi']))
       : query(collection(db, 'randevular'), where('tarih','==',tarih), where('durum','in',['bekliyor','onaylandi']));
     var snap = await getDocs(randevuQuery);
     var dolu = new Set();
     snap.forEach(function(d){ dolu.add(d.data().saat); });
-    Array.from(sel.options).forEach(function(o){
-      if(!o.value){ o.textContent = 'Saat Secin'; return; }
-      if(dolu.has(o.value)){
-        o.disabled = true;
-        o.textContent = o.value + ' — Dolu';
-        o.style.color = '#bbb';
-        o.style.background = '#f5f5f5';
-      } else {
-        o.disabled = false;
-        o.textContent = o.value;
-        o.style.color = '#2e7d32';
-        o.style.background = '';
-      }
-    });
+    var saatler = [
+      '09:00','09:30','10:00','10:30','11:00','11:30',
+      '12:00','13:00','13:30','14:00','14:30','15:00',
+      '15:30','16:00','16:30','17:00','17:30','18:00'
+    ];
+    saatKartlariRender(saatler, document.getElementById('form-saat').value, dolu);
   } catch(e) {
-    Array.from(sel.options).forEach(function(o){
-      if(!o.value){ o.textContent = 'Saat Secin'; return; }
-      o.disabled = false; o.textContent = o.value; o.style.color = '';
-    });
+    var saatler = [
+      '09:00','09:30','10:00','10:30','11:00','11:30',
+      '12:00','13:00','13:30','14:00','14:30','15:00',
+      '15:30','16:00','16:30','17:00','17:30','18:00'
+    ];
+    saatKartlariRender(saatler, document.getElementById('form-saat').value, new Set());
   }
   document.getElementById('saat-yukleniyor').style.display = 'none';
-  sel.disabled = false;
 });
 
 // RANDEVU GONDER
@@ -866,6 +1217,7 @@ window.randevuGonder = async function(){
   if(!tel || tel.replace(/\D/g,'').length < 10){ hatali('form-tel'); return; }
   if(!estetisyen){ hatali('form-estetisyen'); return; }
   if(!tarih)     { hatali('form-tarih'); return; }
+  if(pazarMi(tarih)) { alert('Pazar günü kapalıyız. Lütfen başka bir gün seçin.'); hatali('form-tarih'); return; }
   if(!saat)      { hatali('form-saat'); return; }
 
   var btn = document.getElementById('gonder-btn');
@@ -875,13 +1227,10 @@ window.randevuGonder = async function(){
   try {
     // Cakisma kontrol
     var estetisyenSec = document.getElementById('form-estetisyen').value;
-    var check = await getDocs(query(
-      collection(db, 'randevular'),
-      where('tarih','==',tarih),
-      where('saat','==',saat),
-      where('estetisyen','==',estetisyenSec),
-      where('durum','in',['bekliyor','onaylandi'])
-    ));
+    var checkQuery = estetisyenSec && estetisyenSec !== 'Farketmez'
+      ? query(collection(db, 'randevular'), where('tarih','==',tarih), where('saat','==',saat), where('estetisyen','==',estetisyenSec), where('durum','in',['bekliyor','onaylandi']))
+      : query(collection(db, 'randevular'), where('tarih','==',tarih), where('saat','==',saat), where('durum','in',['bekliyor','onaylandi']));
+    var check = await getDocs(checkQuery);
     if(!check.empty){
       alert('Bu saat dolu! Lütfen başka bir saat seçin.');
       btn.disabled = false;
