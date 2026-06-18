@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://radiosabeautycenter.github.io/randevu/sitemap.xml
